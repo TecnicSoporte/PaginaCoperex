@@ -1,0 +1,128 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using PaginaWebCoperex.Services.AuthorizationServices
+@using PaginaWebCoperex.Services.LoginServices
+@using MudBlazor
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject CustomAuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavigationManager
+@inject IRoleAuthorizationService RoleAuth
+
+@implements IDisposable
+
+<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Style="width: 100%;">
+
+    <!-- Logo -->
+    <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+        <img src="/ImagenesMyF/LogoCoperex.jpg" style="height: 42px;" />
+        <MudText Typo="Typo.h6" Style="font-weight: 600; color: white;">
+            COPEREX
+        </MudText>
+    </MudStack>
+
+    <MudSpacer />
+
+    <!-- Links -->
+    <MudButton Href="/" StartIcon="@Icons.Material.Filled.Home"
+               Color="Color.Inherit" Variant="Variant.Text">
+        Inicio
+    </MudButton>
+
+    <MudButton Href="ResponderEncuesta"
+               StartIcon="@Icons.Material.Filled.Info"
+               Color="Color.Inherit" Variant="Variant.Text">
+        Quiénes Somos
+    </MudButton>
+
+    <MudButton Href="INTERFER"
+               StartIcon="@Icons.Material.Filled.Info"
+               Color="Color.Inherit" Variant="Variant.Text">
+        INTERFER
+    </MudButton>
+
+    <!-- Auth -->
+    <AuthorizeView>
+        <Authorized>
+
+            @if (CanAccess("Encuestas"))
+            {
+                <MudMenu Label="Gestión"
+                         StartIcon="@Icons.Material.Filled.AdminPanelSettings"
+                         EndIcon="@Icons.Material.Filled.ArrowDropDown"
+                         Color="Color.Inherit"
+                         Variant="Variant.Text">
+
+                    <MudMenuItem Href="Encuesta">Encuestas</MudMenuItem>
+                    <MudMenuItem Href="VerRespuestasEncuesta">Respuestas</MudMenuItem>
+                    <MudMenuItem Href="/Reportes/ReporteEncuesta">Reportes</MudMenuItem>
+                    <MudMenuItem Href="usuarios">Usuarios</MudMenuItem>
+
+                </MudMenu>
+            }
+
+            <MudChip T="string" Style="color: white; background-color: rgba(255,255,255,0.15);">
+                @_nombreUsuario
+            </MudChip>
+
+            <MudIconButton Icon="@Icons.Material.Filled.Logout"
+                           Color="Color.Inherit"
+                           OnClick="@HandleLogout" />
+
+        </Authorized>
+
+        <NotAuthorized>
+            <MudButton Href="Login"
+                       StartIcon="@Icons.Material.Filled.Login"
+                       Color="Color.Inherit"
+                       Variant="Variant.Text">
+                Iniciar Sesión
+            </MudButton>
+        </NotAuthorized>
+    </AuthorizeView>
+
+</MudStack>
+
+@code {
+    private string _nombreUsuario = "";
+    private List<string> userPermissions = new();
+    private bool _disposed = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarUsuario();
+        AuthStateProvider.AuthenticationStateChanged += AuthChanged;
+    }
+
+    private async Task CargarUsuario()
+    {
+        var auth = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (auth.User.Identity?.IsAuthenticated == true)
+        {
+            _nombreUsuario = auth.User.Identity.Name ?? "Usuario";
+            userPermissions = await RoleAuth.GetUserPermissionsAsync();
+        }
+    }
+
+    private bool CanAccess(string p) => userPermissions.Contains(p);
+
+    private async void AuthChanged(Task<AuthenticationState> task)
+    {
+        if (_disposed) return;
+        await CargarUsuario();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleLogout()
+    {
+        await AuthStateProvider.LogoutAsync();
+        NavigationManager.NavigateTo("/login", true);
+    }
+
+    public void Dispose()
+    {
+        _disposed = true;
+        AuthStateProvider.AuthenticationStateChanged -= AuthChanged;
+    }
+}

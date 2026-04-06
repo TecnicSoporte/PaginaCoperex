@@ -1,0 +1,30 @@
+﻿@using MudBlazor
+@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudPopoverProvider />
+
+<MudLayout>
+
+    <!-- AppBar correctamente colocado -->
+    <MudAppBar Elevation="2" Style="background-color: #1d386b;" Fixed="true">
+        <NavMenu />
+    </MudAppBar>
+
+    <!-- Contenido -->
+    <MudMainContent>
+        <div style="padding: 80px 24px 24px 24px; min-height: calc(100vh - 64px);">
+            @Body
+        </div>
+
+        <!-- Footer -->
+        <footer style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; padding: 12px 0; text-align: center;">
+            <span style="color: #6c757d;">
+                © @DateTime.Now.Year - Coperex - Comité Permanente de Exposiciones
+            </span>
+        </footer>
+    </MudMainContent>
+
+</MudLayout>

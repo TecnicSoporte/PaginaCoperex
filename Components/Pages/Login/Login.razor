@@ -1,0 +1,455 @@
+﻿@page "/login"
+@using PaginaWebCoperex.Services.LoginServices
+@using Microsoft.AspNetCore.Components.Authorization
+@using PaginaWebCoperex.Models
+@using PaginaWebCoperex.Services.LoginServices
+@using MudBlazor
+@inject ILoginService LoginService
+@inject NavigationManager NavigationManager
+@inject ILogger<Login> logger
+@inject ISnackbar Snackbar
+@inject CustomAuthenticationStateProvider customAuthenticationStateProvider
+@implements IDisposable
+
+<PageTitle>Carnets de Feria - Iniciar Sesión</PageTitle>
+
+<div class="login-page-container">
+	<div class="login-overlay"></div>
+	<div class="login-form-container">
+		<div class="content-wrapper">
+
+			<div class="welcome-side">
+				<div class="logo-container">
+					<img src="/ImagenesMyF/LogoCoperex.jpg" alt="Parque de la Industria" class="full-logo" />
+				</div>
+				<div class="welcome-divider"></div>
+				<p class="welcome-text">Sistema de Gestión</p>
+			</div>
+
+			<div class="login-side">
+				<div class="login-form">
+					<div class="login-header">
+						<div class="login-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1d386b" width="32" height="32">
+								<path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+							</svg>
+						</div>
+						<h2>Iniciar Sesión</h2>
+						<p class="login-subtitle">Bienvenido al sistema COPEREX</p>
+					</div>
+
+					@if (!string.IsNullOrEmpty(errorMessage))
+					{
+						<MudAlert Severity="Severity.Error" Class="mb-4">@errorMessage</MudAlert>
+					}
+
+					<EditForm Model="@credencialesUsuario" OnValidSubmit="@HandleLogin">
+						<DataAnnotationsValidator />
+
+						<div class="form-group">
+							<MudTextField Label="Correo Electrónico"
+										  @bind-Value="credencialesUsuario.Email"
+										  For="@(() => credencialesUsuario.Email)"
+										  Required="true"
+										  Variant="Variant.Outlined"
+										  FullWidth="true"
+										  Class="mb-3 campo-login"
+										  Adornment="Adornment.Start"
+										  AdornmentIcon="@Icons.Material.Filled.Email"
+										  Disabled="@isLoading" />
+						</div>
+
+						<div class="form-group">
+							<MudTextField Label="Contraseña"
+										  @bind-Value="credencialesUsuario.Password"
+										  For="@(() => credencialesUsuario.Password)"
+										  InputType="@(passwordVisible? InputType.Text: InputType.Password)"
+										  Required="true"
+										  Variant="Variant.Outlined"
+										  FullWidth="true"
+										  Adornment="Adornment.End"
+										  Class="campo-login"
+										  AdornmentIcon="@(passwordVisible? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff)"
+										  OnAdornmentClick="@TogglePasswordVisibility"
+										  Disabled="@isLoading" />
+						</div>
+
+						<div class="form-group">
+							<MudButton ButtonType="ButtonType.Submit"
+									   Variant="Variant.Filled"
+									   Color="Color.Inherit"
+									   FullWidth="true"
+									   Size="Size.Large"
+									   Class="iniciar-sesion-button"
+									   Disabled="@isLoading">
+								@if (isLoading)
+								{
+									<MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" Style="color:white;" />
+									<span>Verificando...</span>
+								}
+								else
+								{
+									<span>Iniciar Sesión</span>
+								}
+							</MudButton>
+						</div>
+					</EditForm>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<style>
+
+	/* ── FONDO COMPLETO ── */
+	.login-page-container {
+		position: relative;
+		height: 100vh;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1rem;
+		overflow: hidden; /* ← evita desbordamiento */
+	}
+
+	/* ── OVERLAY DEGRADADO ── */
+	.login-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient( 135deg, rgba(29, 56, 107, 0.72) 0%, rgba(10, 22, 50, 0.55) 50%, rgba(29, 56, 107, 0.45) 100% );
+		z-index: 0;
+	}
+
+	/* ── TARJETA PRINCIPAL ── */
+	.login-form-container {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		max-width: 950px;
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+		backdrop-filter: blur(4px);
+	}
+
+	.content-wrapper {
+		display: flex;
+		flex-direction: row;
+		min-height: 500px;
+	}
+
+	/* ── LADO LOGO ── */
+	.welcome-side {
+		flex: 1;
+		padding: 3rem 2rem;
+		background: linear-gradient(160deg, #1d386b 0%, #0f2040 100%);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.logo-container {
+		width: 80%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.full-logo {
+		width: 100%;
+		max-width: 280px;
+		height: auto;
+		object-fit: contain;
+		filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+		border-radius: 8px;
+	}
+
+	.welcome-divider {
+		width: 48px;
+		height: 3px;
+		background: rgba(255, 255, 255, 0.4);
+		border-radius: 2px;
+	}
+
+	.welcome-text {
+		color: rgba(255, 255, 255, 0.75);
+		font-size: 0.9rem;
+		font-weight: 400;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		margin: 0;
+	}
+
+	/* ── LADO FORMULARIO ── */
+	.login-side {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: rgba(255, 255, 255, 0.97);
+		padding: 3rem 2.5rem;
+	}
+
+	.login-form {
+		width: 100%;
+		max-width: 380px;
+	}
+
+	/* ── HEADER DEL FORM ── */
+	.login-header {
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+
+	.login-icon {
+		width: 60px;
+		height: 60px;
+		background: #eef1f8;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 1rem auto;
+	}
+
+	.login-header h2 {
+		margin: 0 0 0.3rem 0;
+		font-weight: 700;
+		font-size: 1.7rem;
+		color: #1d386b;
+	}
+
+	.login-subtitle {
+		color: #888;
+		font-size: 0.85rem;
+		margin: 0;
+	}
+
+	/* ── CAMPOS ── */
+	.form-group {
+		margin-bottom: 0.5rem;
+	}
+
+	.campo-login .mud-input-outlined-border {
+		border-color: #c5cfe8 !important;
+		transition: border-color 0.2s ease !important;
+	}
+
+	.campo-login:hover .mud-input-outlined-border {
+		border-color: #1d386b !important;
+	}
+
+	.campo-login.mud-input-control.mud-focused .mud-input-outlined-border,
+	.campo-login .mud-focused .mud-input-outlined-border {
+		border-color: #1d386b !important;
+		border-width: 2px !important;
+	}
+
+	.campo-login .mud-input-label {
+		color: #6b7fa3 !important;
+	}
+
+		.campo-login .mud-input-label.mud-input-label-animated {
+			color: #1d386b !important;
+		}
+
+	.campo-login .mud-input-adornment svg {
+		color: #1d386b !important;
+		fill: #1d386b !important;
+	}
+
+	/* ── BOTÓN ── */
+	.iniciar-sesion-button {
+		background-color: #1d386b !important;
+		color: white !important;
+		margin-top: 1.2rem;
+		margin-bottom: 0.5rem;
+		transition: all 0.25s ease;
+		font-weight: 600;
+		letter-spacing: 0.8px;
+		border-radius: 8px !important;
+		height: 48px;
+		box-shadow: 0 4px 14px rgba(29, 56, 107, 0.4) !important;
+	}
+
+		.iniciar-sesion-button:hover:not([disabled]) {
+			background-color: #162d56 !important;
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(29, 56, 107, 0.5) !important;
+		}
+
+		.iniciar-sesion-button:active:not([disabled]) {
+			transform: translateY(0px);
+		}
+
+	/* ── RESPONSIVE ── */
+	@@media (max-width: 768px) {
+		.content-wrapper {
+			flex-direction: column;
+			min-height: auto;
+		}
+
+		.welcome-side {
+			padding: 2rem 1.5rem;
+			gap: 1rem;
+		}
+
+		.full-logo {
+			max-width: 200px;
+		}
+
+		.login-side {
+			padding: 2rem 1.5rem;
+		}
+
+		.login-form-container {
+			max-width: 95%;
+		}
+	}
+
+	@@media (max-width: 480px) {
+		.login-page-container {
+			padding: 0.5rem;
+			background-attachment: scroll;
+		}
+
+		.welcome-side {
+			padding: 1.5rem 1rem;
+		}
+
+		.login-side {
+			padding: 1.5rem 1rem;
+		}
+
+		.full-logo {
+			max-width: 160px;
+		}
+
+		.login-header h2 {
+			font-size: 1.4rem;
+		}
+	}
+
+	/* ── IMAGEN DE FONDO EN PSEUDO-ELEMENTO ── */
+	.login-page-container::before {
+		content: '';
+		position: absolute;
+		inset: -4px; /* ← extiende 4px extra en todos los bordes, elimina líneas de borde */
+		background-image: url('ImagenesMyF/Parque-de-la-industria-S4.jpg');
+		background-size: cover;
+		background-position: center center;
+		background-repeat: no-repeat;
+		z-index: 0;
+	}
+
+	/* ── OVERLAY DEGRADADO ── */
+	.login-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient( 135deg, rgba(29, 56, 107, 0.72) 0%, rgba(10, 22, 50, 0.55) 50%, rgba(29, 56, 107, 0.45) 100% );
+		z-index: 0;
+	}
+
+	/* ── TARJETA PRINCIPAL ── */
+	.login-form-container {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		max-width: 950px;
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+	}
+</style>
+
+@code {
+	private CredencialesUsuario credencialesUsuario = new();
+	private string errorMessage = string.Empty;
+	private bool passwordVisible;
+	private bool isLoading;
+	private bool isUserAuthenticated;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender) return;
+
+		try
+		{
+			var authState = await customAuthenticationStateProvider.GetAuthenticationStateAsync();
+			isUserAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+
+			if (isUserAuthenticated)
+			{
+				NavigationManager.NavigateTo("/Encuesta", replace: true);
+			}
+
+			StateHasChanged();
+		}
+		catch (Exception ex)
+		{
+			logger.LogError(ex, "Error inicializando login component");
+		}
+	}
+
+	private void TogglePasswordVisibility()
+	{
+		passwordVisible = !passwordVisible;
+	}
+
+	private async Task HandleLogin()
+	{
+		isLoading = true;
+		errorMessage = string.Empty;
+
+		try
+		{
+			var respuesta = await LoginService.Login(credencialesUsuario);
+
+			if (string.IsNullOrEmpty(respuesta?.Token))
+			{
+				MostrarError(respuesta?.Error ?? "Credenciales incorrectas.");
+				return;
+			}
+
+			await customAuthenticationStateProvider.SetTokenAsync(respuesta.Token);
+
+			var authState = await customAuthenticationStateProvider.GetAuthenticationStateAsync();
+			if (authState.User.Identity?.IsAuthenticated ?? false)
+			{
+				var userName = authState.User.FindFirst("nombre")?.Value
+							 ?? authState.User.Identity?.Name
+							 ?? "Usuario";
+
+				Snackbar.Add($"¡Bienvenido, {userName}!", Severity.Success);
+				NavigationManager.NavigateTo("/Encuesta", replace: true);
+				isUserAuthenticated = true;
+			}
+			else
+			{
+				MostrarError("Error de autenticación. Intente nuevamente.");
+				await customAuthenticationStateProvider.LogoutAsync();
+			}
+		}
+		catch (Exception ex)
+		{
+			logger.LogError(ex, "Error durante inicio de sesión");
+			MostrarError("Ocurrió un error inesperado. Intente nuevamente.");
+		}
+		finally
+		{
+			isLoading = false;
+		}
+	}
+
+	private void MostrarError(string mensaje)
+	{
+		errorMessage = mensaje;
+		Snackbar.Add(errorMessage, Severity.Error);
+	}
+
+	public void Dispose() { }
+}
