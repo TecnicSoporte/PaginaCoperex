@@ -232,7 +232,6 @@ D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\0wz98yz2xy-{0}-8dl
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\o7k4cxtn0u-{0}-0ykner63ol-0ykner63ol.gz
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\eopr0x3mwt-{0}-5i58f3vq5b-5i58f3vq5b.gz
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\jjtd6l0pqq-{0}-ixlxhzz420-ixlxhzz420.gz
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\z0gprjiv1a-{0}-khy4lop6wu-khy4lop6wu.gz
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\xbuqoevtua-{0}-bqjiyaj88i-bqjiyaj88i.gz
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\nyjl8d1k7q-{0}-c2jlpeoesf-c2jlpeoesf.gz
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\b1y08zsp0v-{0}-erw9l3u2r3-erw9l3u2r3.gz
@@ -291,3 +290,5 @@ D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\refint\PaginaWebCoperex.dll
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\PaginaWebCoperex.pdb
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\PaginaWebCoperex.genruntimeconfig.cache
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\ref\PaginaWebCoperex.dll
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\PaginaWebCoperex.sourcelink.json
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net9.0\compressed\z0gprjiv1a-{0}-zp6v6mfu6j-zp6v6mfu6j.gz

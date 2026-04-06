@@ -1,4 +1,3 @@
-wwwroot\app.css
 wwwroot\favicon.png
 wwwroot\ImagenesMyF\LogoCoperex.jpg
 wwwroot\ImagenesMyF\Monumento-Industria.jpg
@@ -47,7 +46,7 @@ wwwroot\lib\bootstrap\dist\js\bootstrap.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
-D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\app.css
+wwwroot\app.css
 D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
@@ -92,3 +91,4 @@ D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\lib\bootstrap\dist\js\bootstrap.js
 D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+D:\PaginaCOPEREX\PaginaWebCoperex\wwwroot\app.css
