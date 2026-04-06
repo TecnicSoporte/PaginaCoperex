@@ -41,6 +41,21 @@
         INTERFER
     </MudButton>
 
+    <!-- Nuestros Espacios (visible para todos) -->
+    <MudMenu Label="Nuestros Espacios"
+             EndIcon="@Icons.Material.Filled.ArrowDropDown"
+             Color="Color.Inherit"
+             Variant="Variant.Text"
+             AnchorOrigin="Origin.BottomLeft"
+             TransformOrigin="Origin.TopLeft">
+
+        <MudMenuItem>Nuestras Áreas</MudMenuItem>
+        <MudMenuItem>Patrimonios Nacionales</MudMenuItem>
+        <MudMenuItem>Parqueos</MudMenuItem>
+        <MudMenuItem>Servicios Adicionales</MudMenuItem>
+
+    </MudMenu>
+
     <!-- Auth -->
     <AuthorizeView>
         <Authorized>
@@ -51,7 +66,9 @@
                          StartIcon="@Icons.Material.Filled.AdminPanelSettings"
                          EndIcon="@Icons.Material.Filled.ArrowDropDown"
                          Color="Color.Inherit"
-                         Variant="Variant.Text">
+                         Variant="Variant.Text"
+                         AnchorOrigin="Origin.BottomLeft"
+                         TransformOrigin="Origin.TopLeft">
 
                     <MudMenuItem Href="Encuesta">Encuestas</MudMenuItem>
                     <MudMenuItem Href="VerRespuestasEncuesta">Respuestas</MudMenuItem>

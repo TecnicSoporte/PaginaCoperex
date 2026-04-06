@@ -2,6 +2,11 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+/* Ensure MudBlazor popovers (menus, dropdowns) render above the fixed AppBar */
+.mud-popover-provider {
+    z-index: 1400;
+}
+
 a, .btn-link {
     color: #006bb7;
 }
