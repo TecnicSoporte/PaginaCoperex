@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ── Blazor ────────────────────────────────────────────────
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents(options => options.DetailedErrors = true);
 
 builder.Services.AddCascadingAuthenticationState();
 
@@ -52,7 +52,7 @@ app.UseAuthorization();    // ← faltaba
 
 app.UseAntiforgery();
 
-app.MapStaticAssets();
+app.UseStaticFiles();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
