@@ -4,6 +4,7 @@ using MudBlazor.Services;
 using PaginaWebCoperex.Components;
 using PaginaWebCoperex.Models;
 using PaginaWebCoperex.Services.AuthorizationServices;
+using PaginaWebCoperex.Services.DepartamentoServices;
 using PaginaWebCoperex.Services.LoginServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,7 @@ builder.Services.AddScoped<AuthenticationStateProvider>(provider =>
 
 builder.Services.AddScoped<IRoleAuthorizationService, RoleAuthorizationService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IDepartamentoService, DepartamentoService>();
 
 // ── MudBlazor ────────────────────────────────────────────
 builder.Services.AddMudServices();

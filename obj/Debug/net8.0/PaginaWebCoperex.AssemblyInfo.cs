@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PaginaWebCoperex")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad9c9183ff85466368f6878ba74e06fc98abc100")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b68903148b292dae1d7b360852e127494bcde43d")]
 [assembly: System.Reflection.AssemblyProductAttribute("PaginaWebCoperex")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PaginaWebCoperex")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

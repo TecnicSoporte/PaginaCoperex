@@ -3,6 +3,15 @@ wwwroot\favicon.png
 wwwroot\ImagenesMyF\LogoCoperex.jpg
 wwwroot\ImagenesMyF\Monumento-Industria.jpg
 wwwroot\ImagenesMyF\Parque-de-la-industria-S4.jpg
+wwwroot\ImagenesMyF\Parqueos.png
+wwwroot\ImagenesPM\CopaMundo.jpg
+wwwroot\ImagenesPM\CopaVallas.png
+wwwroot\ImagenesPM\Entrada.jpg
+wwwroot\ImagenesPM\JornadaSalud.jpg
+wwwroot\ImagenesPM\JornadaSalud02.jpg
+wwwroot\ImagenesPM\MuCopa.png
+wwwroot\ImagenesPM\Muppin.png
+wwwroot\ImagenesPM\VallasPublicitarias.png
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css

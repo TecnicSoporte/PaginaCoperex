@@ -1,0 +1,1380 @@
+﻿@page "/Parqueos"
+
+<PageTitle>COPEREX - Parqueo Seguro</PageTitle>
+
+<style>
+    :root {
+        --azul: #1d386b;
+        --azul-dark: #0d1f3c;
+        --azul-light: rgba(29,56,107,0.07);
+        --naranja: #FF8C00;
+        --naranja-dark: #d97200;
+        --naranja-glow: rgba(255,140,0,0.28);
+        --gris-texto: #4a4a6a;
+        --gris-claro: #f4f7fc;
+        --font-title: 'Georgia', 'Times New Roman', serif;
+        --font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(32px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-10px); }
+    }
+    @@keyframes pulse-ring {
+        0%   { box-shadow: 0 0 0 0 var(--naranja-glow); }
+        70%  { box-shadow: 0 0 0 16px rgba(255,140,0,0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,140,0,0); }
+    }
+    @@keyframes driveIn {
+        from { opacity: 0; transform: translateX(-60px); }
+        to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── HERO ── */
+    .pk-hero {
+        position: relative;
+        height: 88vh;
+        min-height: 560px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-top: -64px;
+    }
+
+    .pk-hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(135deg, var(--azul-dark) 0%, #1a3060 40%, #0f2040 100%);
+    }
+
+    /* patrón de cuadrícula tipo parqueo */
+    .pk-hero-grid {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+    }
+
+    /* líneas diagonales decorativas */
+    .pk-hero-accent {
+        position: absolute;
+        top: 0; right: 0;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(135deg, transparent 50%, rgba(255,140,0,0.06) 100%);
+        z-index: 1;
+    }
+
+    /* gran "P" decorativa */
+    .pk-hero-letter {
+        position: absolute;
+        right: 8%;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: var(--font-title);
+        font-size: 28rem;
+        font-weight: 900;
+        color: rgba(255,255,255,0.03);
+        line-height: 1;
+        z-index: 1;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    .pk-hero-content {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        color: white;
+        padding: 0 24px;
+        max-width: 860px;
+        animation: fadeUp 0.9s ease both;
+    }
+
+    .pk-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,140,0,0.16);
+        border: 1px solid rgba(255,140,0,0.45);
+        border-radius: 50px;
+        padding: 8px 22px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 28px;
+        letter-spacing: 0.5px;
+        backdrop-filter: blur(6px);
+        animation: fadeIn 0.7s 0.2s ease both;
+    }
+
+    .pk-hero-title {
+        font-family: var(--font-title);
+        font-size: clamp(2.4rem, 6vw, 4.5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 22px;
+        animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .pk-highlight { color: var(--naranja); }
+
+    .pk-hero-desc {
+        font-size: 1.08rem;
+        opacity: 0.85;
+        margin: 0 auto 36px;
+        line-height: 1.75;
+        max-width: 660px;
+        animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .pk-hero-chips {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+        animation: fadeUp 0.8s 0.55s ease both;
+    }
+
+    .pk-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 50px;
+        padding: 7px 16px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        backdrop-filter: blur(4px);
+        transition: background 0.2s, border-color 0.2s;
+    }
+
+    .pk-chip:hover {
+        background: rgba(255,140,0,0.2);
+        border-color: var(--naranja);
+    }
+
+    .pk-hero-btns {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeUp 0.8s 0.65s ease both;
+    }
+
+    /* stat strip en hero */
+    .pk-hero-stats {
+        position: absolute;
+        bottom: 0;
+        left: 0; right: 0;
+        z-index: 3;
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        background: rgba(255,255,255,0.06);
+        backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .pk-hero-stat {
+        flex: 1;
+        max-width: 220px;
+        padding: 20px 16px;
+        text-align: center;
+        border-right: 1px solid rgba(255,255,255,0.1);
+        color: white;
+    }
+
+    .pk-hero-stat:last-child { border-right: none; }
+
+    .pk-hero-stat-num {
+        font-family: var(--font-title);
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: var(--naranja);
+        display: block;
+        line-height: 1;
+    }
+
+    .pk-hero-stat-label {
+        font-size: 0.75rem;
+        opacity: 0.7;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 3px;
+        display: block;
+    }
+
+    /* ── BOTONES ── */
+    .pk-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--naranja);
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+        box-shadow: 0 4px 20px rgba(255,140,0,0.38);
+        animation: pulse-ring 2.8s infinite 2s;
+    }
+    .pk-btn-primary:hover {
+        background: var(--naranja-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(255,140,0,0.5);
+    }
+
+    .pk-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: 2px solid rgba(255,255,255,0.55);
+        border-radius: 50px;
+        padding: 12px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    }
+    .pk-btn-secondary:hover {
+        background: rgba(255,255,255,0.12);
+        border-color: white;
+        transform: translateY(-3px);
+    }
+
+    .pk-btn-azul {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--azul);
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+        box-shadow: 0 4px 20px rgba(29,56,107,0.3);
+    }
+    .pk-btn-azul:hover {
+        background: var(--azul-dark);
+        transform: translateY(-3px);
+    }
+
+    /* ── SECTION HEADER ── */
+    .pk-section-header {
+        text-align: center;
+        margin-bottom: 56px;
+    }
+
+    .pk-section-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--naranja);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .pk-section-header h2 {
+        font-family: var(--font-title);
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .pk-section-header p {
+        color: var(--gris-texto);
+        font-size: 1.05rem;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.7;
+    }
+
+    /* ── ABOUT / INSTALACIONES ── */
+    .pk-about {
+        padding: 100px 20px;
+        background: white;
+        overflow: hidden;
+    }
+
+    .pk-about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 72px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: center;
+    }
+
+    .pk-about-img-wrap {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 32px 80px rgba(29,56,107,0.18);
+        animation: driveIn 0.9s ease both;
+    }
+
+    .pk-about-img-wrap::before {
+        content: '';
+        position: absolute;
+        top: -3px; left: -3px; right: -3px; bottom: -3px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--naranja), var(--azul));
+        z-index: -1;
+    }
+
+    .pk-about-img-wrap img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .pk-about-img-wrap:hover img { transform: scale(1.04); }
+
+    .pk-about-badge {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        background: var(--naranja);
+        color: white;
+        font-weight: 800;
+        font-size: 1rem;
+        padding: 10px 22px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(255,140,0,0.4);
+        letter-spacing: 1px;
+    }
+
+    /* "P" flotante sobre imagen */
+    .pk-about-p-tag {
+        position: absolute;
+        top: 24px;
+        right: -16px;
+        background: white;
+        border-left: 4px solid var(--naranja);
+        border-radius: 10px 0 0 10px;
+        padding: 14px 22px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        font-family: var(--font-title);
+        font-size: 2.4rem;
+        font-weight: 900;
+        color: var(--azul);
+        line-height: 1;
+    }
+
+    .pk-about-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--naranja);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .pk-about-title {
+        font-family: var(--font-title);
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--azul);
+        margin-bottom: 22px;
+        line-height: 1.2;
+    }
+
+    .pk-about-text {
+        color: var(--gris-texto);
+        line-height: 1.85;
+        margin-bottom: 16px;
+        font-size: 0.97rem;
+    }
+
+    .pk-feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 28px 0 36px;
+    }
+
+    .pk-feature-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 18px;
+        border-radius: 12px;
+        background: var(--gris-claro);
+        border-left: 3px solid var(--naranja);
+        transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+        cursor: default;
+    }
+
+    .pk-feature-item:hover {
+        background: white;
+        transform: translateX(6px);
+        box-shadow: 0 4px 18px rgba(29,56,107,0.09);
+    }
+
+    .pk-feature-icon {
+        width: 42px;
+        height: 42px;
+        background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .pk-feature-text {
+        color: var(--azul);
+        font-weight: 600;
+        font-size: 0.92rem;
+    }
+
+    /* ── BENEFITS ── */
+    .pk-benefits {
+        padding: 100px 20px;
+        background: var(--gris-claro);
+    }
+
+    .pk-benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .pk-benefit-card {
+        background: white;
+        border-radius: 20px;
+        padding: 36px 28px;
+        text-align: center;
+        transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pk-benefit-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--azul), var(--naranja));
+        transform: scaleX(0);
+        transition: transform 0.35s ease;
+        transform-origin: left;
+    }
+
+    .pk-benefit-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 28px 56px rgba(29,56,107,0.13);
+        border-color: rgba(29,56,107,0.06);
+    }
+
+    .pk-benefit-card:hover::after { transform: scaleX(1); }
+
+    .pk-benefit-icon {
+        width: 68px;
+        height: 68px;
+        background: linear-gradient(135deg, var(--azul), var(--naranja));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 22px;
+        color: white;
+        transition: transform 0.3s ease;
+        box-shadow: 0 8px 24px rgba(29,56,107,0.2);
+        animation: float 3.5s ease-in-out infinite;
+    }
+
+    .pk-benefit-card:nth-child(2) .pk-benefit-icon { animation-delay: 0.4s; }
+    .pk-benefit-card:nth-child(3) .pk-benefit-icon { animation-delay: 0.8s; }
+    .pk-benefit-card:nth-child(4) .pk-benefit-icon { animation-delay: 1.2s; }
+    .pk-benefit-card:nth-child(5) .pk-benefit-icon { animation-delay: 1.6s; }
+    .pk-benefit-card:nth-child(6) .pk-benefit-icon { animation-delay: 2.0s; }
+
+    .pk-benefit-card:hover .pk-benefit-icon { transform: rotate(-8deg) scale(1.1); animation-play-state: paused; }
+
+    .pk-benefit-card h3 {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .pk-benefit-card p {
+        color: var(--gris-texto);
+        line-height: 1.75;
+        font-size: 0.92rem;
+    }
+
+    /* ── VEHÍCULOS ── */
+    .pk-vehicles {
+        padding: 100px 20px;
+        background: var(--azul);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pk-vehicles::before {
+        content: '';
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 400px; height: 400px;
+        border-radius: 50%;
+        background: rgba(255,140,0,0.07);
+        pointer-events: none;
+    }
+
+    .pk-vehicles .pk-section-header h2 { color: white; }
+    .pk-vehicles .pk-section-header p  { color: rgba(255,255,255,0.65); }
+    .pk-vehicles .pk-section-label     { color: rgba(255,140,0,0.9); }
+
+    .pk-vehicles-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .pk-vehicle-card {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 16px;
+        padding: 28px 16px;
+        text-align: center;
+        color: white;
+        transition: background 0.3s, transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        cursor: default;
+    }
+
+    .pk-vehicle-card:hover {
+        background: rgba(255,140,0,0.15);
+        border-color: var(--naranja);
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+    }
+
+    .pk-vehicle-icon {
+        font-size: 2.4rem;
+        margin-bottom: 12px;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .pk-vehicle-card:hover .pk-vehicle-icon { transform: scale(1.2); }
+
+    .pk-vehicle-card h3 {
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .pk-vehicle-card p {
+        font-size: 0.78rem;
+        color: rgba(255,255,255,0.65);
+        line-height: 1.5;
+    }
+
+    /* ── FAQ ── */
+    .pk-faq {
+        padding: 100px 20px;
+        background: white;
+    }
+
+    .pk-faq-list {
+        max-width: 860px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .pk-faq-item {
+        border-radius: 14px;
+        border: 2px solid var(--gris-claro);
+        overflow: hidden;
+        transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .pk-faq-item.open {
+        border-color: var(--naranja);
+        box-shadow: 0 8px 28px rgba(255,140,0,0.10);
+    }
+
+    .pk-faq-trigger {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 22px 28px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        transition: background 0.2s;
+    }
+
+    .pk-faq-trigger:hover { background: var(--gris-claro); }
+    .pk-faq-item.open .pk-faq-trigger { background: var(--gris-claro); }
+
+    .pk-faq-q {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .pk-faq-num {
+        width: 34px;
+        height: 34px;
+        background: linear-gradient(135deg, var(--azul), var(--naranja));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .pk-faq-question {
+        font-weight: 700;
+        color: var(--azul);
+        font-size: 1rem;
+    }
+
+    .pk-faq-arrow {
+        color: var(--naranja);
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    .pk-faq-item.open .pk-faq-arrow { transform: rotate(180deg); }
+
+    .pk-faq-body {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, padding 0.3s ease;
+        padding: 0 28px;
+    }
+
+    .pk-faq-item.open .pk-faq-body {
+        max-height: 300px;
+        padding: 0 28px 24px;
+    }
+
+    .pk-faq-body p {
+        color: var(--gris-texto);
+        line-height: 1.8;
+        font-size: 0.95rem;
+        border-left: 3px solid var(--naranja);
+        padding-left: 16px;
+    }
+
+    /* ── HORARIOS ── */
+    .pk-hours {
+        padding: 80px 20px;
+        background: var(--gris-claro);
+    }
+
+    .pk-hours-box {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 24px;
+        border: 3px solid var(--azul);
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(29,56,107,0.12);
+    }
+
+    .pk-hours-header {
+        background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+        padding: 32px 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        color: white;
+    }
+
+    .pk-hours-header-icon {
+        width: 64px;
+        height: 64px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .pk-hours-header h2 {
+        font-family: var(--font-title);
+        font-size: 1.8rem;
+        font-weight: 900;
+        margin-bottom: 4px;
+    }
+
+    .pk-hours-header p {
+        opacity: 0.75;
+        font-size: 0.9rem;
+    }
+
+    .pk-hours-body {
+        padding: 36px 40px;
+    }
+
+    .pk-hours-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--gris-claro);
+    }
+
+    .pk-hours-row:last-child { border-bottom: none; }
+
+    .pk-hours-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--naranja);
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 6px;
+    }
+
+    .pk-hours-day {
+        font-weight: 700;
+        color: var(--azul);
+        min-width: 180px;
+        font-size: 0.95rem;
+    }
+
+    .pk-hours-time {
+        color: var(--gris-texto);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .pk-hours-tariff {
+        display: flex;
+        gap: 16px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+    }
+
+    .pk-tariff-chip {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+        color: white;
+        border-radius: 50px;
+        padding: 10px 22px;
+        font-weight: 700;
+        font-size: 0.92rem;
+        box-shadow: 0 4px 16px rgba(29,56,107,0.25);
+    }
+
+    .pk-tariff-price {
+        color: var(--naranja);
+        font-size: 1.1rem;
+    }
+
+    /* ── CTA ── */
+    .pk-cta {
+        padding: 100px 20px;
+        background: linear-gradient(135deg, var(--azul-dark) 0%, var(--azul) 100%);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pk-cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+
+    .pk-cta::after {
+        content: '';
+        position: absolute;
+        bottom: -120px; right: -120px;
+        width: 360px; height: 360px;
+        border-radius: 50%;
+        background: rgba(255,140,0,0.08);
+        pointer-events: none;
+    }
+
+    .pk-cta-inner { position: relative; z-index: 1; }
+
+    .pk-cta h2 {
+        font-family: var(--font-title);
+        font-size: 2.4rem;
+        font-weight: 900;
+        color: white;
+        margin-bottom: 18px;
+    }
+
+    .pk-cta p {
+        color: rgba(255,255,255,0.72);
+        max-width: 580px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+
+    .pk-cta-btns {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* ── FOOTER ── */
+    .pk-footer {
+        background: var(--azul-dark);
+        color: white;
+        padding: 64px 20px 0;
+    }
+
+    .pk-footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+        gap: 48px;
+        max-width: 1200px;
+        margin: 0 auto 48px;
+    }
+
+    .pk-footer-section h3 {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 22px;
+        color: var(--naranja);
+    }
+
+    .pk-footer-section p,
+    .pk-footer-section a {
+        color: rgba(255,255,255,0.58);
+        text-decoration: none;
+        font-size: 0.9rem;
+        line-height: 2.3;
+        display: block;
+        transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .pk-footer-section a:hover { color: white; padding-left: 6px; }
+
+    .pk-footer-logo img {
+        height: 80px;
+        width: 160px;
+        background: white;
+        border-radius: 10px;
+        padding: 8px;
+        object-fit: contain;
+        margin-bottom: 18px;
+        display: block;
+    }
+
+    .pk-social-links { display: flex; gap: 10px; margin-top: 16px; }
+
+    .pk-social-btn {
+        width: 38px; height: 38px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,0.65);
+        text-decoration: none;
+        transition: background 0.25s, color 0.25s, transform 0.25s, border-color 0.25s;
+    }
+
+    .pk-social-btn:hover {
+        background: var(--naranja);
+        border-color: var(--naranja);
+        color: white;
+        transform: translateY(-4px);
+    }
+
+    .pk-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: rgba(255,255,255,0.58);
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    .pk-footer-divider {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.07);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .pk-footer-bottom {
+        padding: 24px 0;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .pk-footer-bottom p, .pk-footer-brand {
+        color: rgba(255,255,255,0.38);
+        font-size: 0.82rem;
+    }
+
+    .pk-footer-brand span { color: var(--naranja); font-weight: 700; }
+
+    /* ── RESPONSIVE ── */
+    @@media (max-width: 1024px) {
+        .pk-about-grid      { grid-template-columns: 1fr; gap: 48px; }
+        .pk-benefits-grid   { grid-template-columns: repeat(2, 1fr); }
+        .pk-vehicles-grid   { grid-template-columns: repeat(3, 1fr); }
+        .pk-footer-grid     { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @@media (max-width: 640px) {
+        .pk-benefits-grid   { grid-template-columns: 1fr; }
+        .pk-vehicles-grid   { grid-template-columns: repeat(2, 1fr); }
+        .pk-footer-grid     { grid-template-columns: 1fr; }
+        .pk-hero-stats      { display: none; }
+        .pk-hours-row       { flex-direction: column; gap: 4px; }
+        .pk-hours-day       { min-width: unset; }
+        .pk-footer-bottom   { flex-direction: column; text-align: center; }
+        .pk-about-p-tag     { display: none; }
+    }
+</style>
+
+<!-- ═══ HERO ═══ -->
+<section class="pk-hero">
+    <div class="pk-hero-bg">
+        <div class="pk-hero-grid"></div>
+        <div class="pk-hero-accent"></div>
+        <div class="pk-hero-letter">P</div>
+    </div>
+
+    <div class="pk-hero-content">
+        <div class="pk-hero-badge">
+            <MudIcon Icon="@Icons.Material.Filled.Shield" Size="Size.Small" Style="color:#FF8C00;" />
+            <span>Protección las 24 Horas</span>
+        </div>
+
+        <h1 class="pk-hero-title">
+            Parqueo <span class="pk-highlight">Seguro</span><br />y Accesible
+        </h1>
+
+        <p class="pk-hero-desc">
+            Contamos con amplias áreas de estacionamiento distribuidas estratégicamente
+            en nuestras instalaciones. Espacios techados y al aire libre con vigilancia
+            24/7 para garantizar la seguridad de su vehículo durante todo su evento.
+        </p>
+
+        <div class="pk-hero-chips">
+            <div class="pk-chip">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color:#FF8C00;" />
+                <span>Tarifas Únicas</span>
+            </div>
+            <div class="pk-chip">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color:#FF8C00;" />
+                <span>500+ Automóviles</span>
+            </div>
+            <div class="pk-chip">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color:#FF8C00;" />
+                <span>Espacios Accesibles</span>
+            </div>
+        </div>
+
+        <div class="pk-hero-btns">
+            <a href="/contacto" class="pk-btn-primary">
+                Consultar Disponibilidad
+                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+            </a>
+            <a href="#beneficios" class="pk-btn-secondary">
+                Ver Beneficios
+                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+            </a>
+        </div>
+    </div>
+
+    <div class="pk-hero-stats">
+        <div class="pk-hero-stat">
+            <span class="pk-hero-stat-num">500+</span>
+            <span class="pk-hero-stat-label">Espacios</span>
+        </div>
+        <div class="pk-hero-stat">
+            <span class="pk-hero-stat-num">24/7</span>
+            <span class="pk-hero-stat-label">Vigilancia</span>
+        </div>
+        <div class="pk-hero-stat">
+            <span class="pk-hero-stat-num">6</span>
+            <span class="pk-hero-stat-label">Tipos de Vehículos</span>
+        </div>
+        <div class="pk-hero-stat">
+            <span class="pk-hero-stat-num">3-5</span>
+            <span class="pk-hero-stat-label">Min a Salones</span>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ INSTALACIONES ═══ -->
+<section class="pk-about">
+    <div class="pk-about-grid">
+        <div class="pk-about-img-wrap">
+            <img src="/ImagenesMyF/Parqueos.png"
+                 alt="Parqueos COPEREX" loading="lazy" />
+            <div class="pk-about-badge">Desde 1971</div>
+            <div class="pk-about-p-tag">P</div>
+        </div>
+
+        <div>
+            <span class="pk-about-label">Centro de Convenciones #1 en Guatemala</span>
+            <h2 class="pk-about-title">Nuestras<br />Instalaciones</h2>
+
+            <p class="pk-about-text">
+                En COPEREX entendemos la importancia de ofrecer comodidad desde el momento
+                de su llegada. Por ello, contamos con <strong>múltiples áreas de parqueo</strong>
+                diseñadas para satisfacer las necesidades de cualquier tipo de evento.
+            </p>
+
+            <div class="pk-feature-list">
+                @foreach (var f in _features)
+                {
+                    <div class="pk-feature-item">
+                        <div class="pk-feature-icon">
+                            <MudIcon Icon="@f.Icon" Style="color:white;" Size="Size.Small" />
+                        </div>
+                        <span class="pk-feature-text">@f.Texto</span>
+                    </div>
+                }
+            </div>
+
+            <a href="/contacto" class="pk-btn-azul">
+                Más Información
+                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ BENEFICIOS ═══ -->
+<section class="pk-benefits" id="beneficios">
+    <div class="pk-section-header">
+        <span class="pk-section-label">Nuestras Ventajas</span>
+        <h2>¿Por Qué Elegir Nuestro Parqueo?</h2>
+        <p>Ofrecemos la mejor experiencia de estacionamiento con servicios diseñados para su comodidad y tranquilidad</p>
+    </div>
+
+    <div class="pk-benefits-grid">
+        @foreach (var b in _beneficios)
+        {
+            <div class="pk-benefit-card">
+                <div class="pk-benefit-icon">
+                    <MudIcon Icon="@b.Icon" Style="color:white; font-size:1.8rem;" />
+                </div>
+                <h3>@b.Titulo</h3>
+                <p>@b.Descripcion</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ═══ TIPOS DE VEHÍCULOS ═══ -->
+<section class="pk-vehicles">
+    <div class="pk-section-header">
+        <span class="pk-section-label">Todos Bienvenidos</span>
+        <h2>Aceptamos Todo Tipo de Vehículos</h2>
+        <p>Contamos con espacios adecuados para cualquier tipo de transporte</p>
+    </div>
+
+    <div class="pk-vehicles-grid">
+        @foreach (var v in _vehiculos)
+        {
+            <div class="pk-vehicle-card">
+                <span class="pk-vehicle-icon">@v.Emoji</span>
+                <h3>@v.Nombre</h3>
+                <p>@v.Desc</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="pk-faq">
+    <div class="pk-section-header">
+        <span class="pk-section-label">Resolvemos tus Dudas</span>
+        <h2>Preguntas Frecuentes</h2>
+        <p>Todo lo que necesitas saber sobre nuestro servicio de parqueo</p>
+    </div>
+
+    <div class="pk-faq-list">
+        @for (int i = 0; i < _faqs.Count; i++)
+        {
+            var idx = i;
+            var faq = _faqs[i];
+            var isOpen = _faqOpen == idx;
+
+            <div class="pk-faq-item @(isOpen ? "open" : "")">
+                <button class="pk-faq-trigger" @onclick="() => ToggleFaq(idx)">
+                    <div class="pk-faq-q">
+                        <div class="pk-faq-num">@((idx + 1).ToString("D2"))</div>
+                        <span class="pk-faq-question">@faq.Pregunta</span>
+                    </div>
+                    <MudIcon Icon="@(isOpen ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
+                             Class="pk-faq-arrow" />
+                </button>
+                <div class="pk-faq-body">
+                    <p>@faq.Respuesta</p>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ═══ HORARIOS ═══ -->
+<section class="pk-hours">
+    <div class="pk-section-header">
+        <span class="pk-section-label">Siempre Disponible</span>
+        <h2>Horarios de Servicio</h2>
+    </div>
+
+    <div class="pk-hours-box">
+        <div class="pk-hours-header">
+            <div class="pk-hours-header-icon">
+                <MudIcon Icon="@Icons.Material.Filled.AccessTime" Style="color:white; font-size:2rem;" />
+            </div>
+            <div>
+                <h2>Horarios de Atención</h2>
+                <p>Disponible durante todos los horarios de eventos y uso diario</p>
+            </div>
+        </div>
+
+        <div class="pk-hours-body">
+            <div class="pk-hours-row">
+                <div class="pk-hours-dot"></div>
+                <span class="pk-hours-day">Lunes a Viernes</span>
+                <span class="pk-hours-time">6:00 AM — 9:00 PM</span>
+            </div>
+            <div class="pk-hours-row">
+                <div class="pk-hours-dot"></div>
+                <span class="pk-hours-day">Sábado y Domingo</span>
+                <span class="pk-hours-time">7:00 AM — 1:00 AM (según horario de evento)</span>
+            </div>
+
+            <div class="pk-hours-tariff">
+                <div class="pk-tariff-chip">
+                    <MudIcon Icon="@Icons.Material.Filled.LocalParking" Size="Size.Small" />
+                    Tarifa especial +7 hrs:
+                    <span class="pk-tariff-price">Q. 50.00</span>
+                </div>
+                <div class="pk-tariff-chip">
+                    <MudIcon Icon="@Icons.Material.Filled.Schedule" Size="Size.Small" />
+                    Por hora:
+                    <span class="pk-tariff-price">Q. 10.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="pk-cta">
+    <div class="pk-cta-inner">
+        <h2>¿Planea un Evento en COPEREX?</h2>
+        <p>No se preocupe por el parqueo. Nosotros nos encargamos de la comodidad
+        y seguridad de sus invitados desde el momento en que llegan.</p>
+        <div class="pk-cta-btns">
+            <a href="/contacto" class="pk-btn-primary">
+                Contactar Ahora
+                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+            </a>
+            <a href="/Salones" class="pk-btn-secondary">Ver Salones</a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="pk-footer">
+    <div class="pk-footer-grid">
+        <div class="pk-footer-section">
+            <div class="pk-footer-logo">
+                <img src="/ImagenesMyF/LogoCoperex.jpg" alt="Logo COPEREX" />
+            </div>
+            <p>Centro de convenciones líder en Guatemala, ofreciendo espacios de calidad para todo tipo de eventos desde 1971.</p>
+            <div class="pk-social-links">
+                <a href="https://www.facebook.com/parquedelaindustriacoperex" class="pk-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Small" />
+                </a>
+                <a href="https://www.instagram.com/parquedelaindustria/" class="pk-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.CameraAlt" Size="Size.Small" />
+                </a>
+                <a href="https://x.com/ParqIndustriaGt" class="pk-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.AlternateEmail" Size="Size.Small" />
+                </a>
+                <a href="https://www.linkedin.com/company/coperex/" class="pk-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.LinkedIn" Size="Size.Small" />
+                </a>
+            </div>
+        </div>
+
+        <div class="pk-footer-section">
+            <h3>Navegación</h3>
+            <a href="/">Inicio</a>
+            <a href="/QuienesSomos">Quiénes Somos</a>
+            <a href="/Salones">Nuestros Espacios</a>
+            <a href="/INTERFER">INTERFER</a>
+            <a href="/contacto">Contacto</a>
+        </div>
+
+        <div class="pk-footer-section">
+            <h3>Servicios</h3>
+            <a href="/Salones">Alquiler de Salones</a>
+            <a href="#">Eventos Corporativos</a>
+            <a href="#">Ferias Comerciales</a>
+            <a href="#">Eventos Sociales</a>
+            <a href="/PatrimoniosNacionales">Patrimonios Nacionales</a>
+        </div>
+
+        <div class="pk-footer-section">
+            <h3>Contacto</h3>
+            <div class="pk-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>Zona 9, Ciudad de Guatemala</span>
+            </div>
+            <div class="pk-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>info@coperex.com.gt</span>
+            </div>
+            <div class="pk-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.Phone" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>+502 2222-6464 EXT. 157</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="pk-footer-divider" />
+
+    <div class="pk-footer-bottom">
+        <p>&copy; @DateTime.Now.Year COPEREX. Todos los derechos reservados.</p>
+        <p class="pk-footer-brand">Parque de la Industria — <span>Guatemala</span></p>
+    </div>
+</footer>
+
+@code {
+    private int? _faqOpen = null;
+
+    private void ToggleFaq(int idx) =>
+        _faqOpen = _faqOpen == idx ? null : idx;
+
+    private record FeatureItem(string Icon, string Texto);
+    private record BenefitItem(string Icon, string Titulo, string Descripcion);
+    private record VehicleItem(string Emoji, string Nombre, string Desc);
+    private record FaqItem(string Pregunta, string Respuesta);
+
+    private readonly List<FeatureItem> _features = new()
+    {
+        new(Icons.Material.Filled.Signpost,       "Señalización clara y visible en todo el recorrido"),
+        new(Icons.Material.Filled.Videocam,        "Vigilancia las 24 horas, los 7 días de la semana"),
+        new(Icons.Material.Filled.SupportAgent,    "Personal capacitado para orientación y asistencia"),
+        new(Icons.Material.Filled.DirectionsCar,   "Entrada y salida ágil con control de acceso"),
+    };
+
+    private readonly List<BenefitItem> _beneficios = new()
+    {
+        new(Icons.Material.Filled.Shield,
+            "Seguridad 24/7",
+            "Personal de vigilancia y cámaras de seguridad monitoreando constantemente todas nuestras áreas de parqueo."),
+
+        new(Icons.Material.Filled.LocalParking,
+            "Amplia Capacidad",
+            "Más de 500 espacios disponibles para todo tipo de vehículos, desde autos hasta autobuses."),
+
+        new(Icons.Material.Filled.Roofing,
+            "Áreas Techadas",
+            "Protección contra sol y lluvia en nuestras áreas de parqueo cubiertas, para mayor comodidad."),
+
+        new(Icons.Material.Filled.LocationOn,
+            "Ubicación Estratégica",
+            "Acceso directo a todos los salones y áreas del centro de convenciones en solo 3-5 minutos."),
+
+        new(Icons.Material.Filled.Lightbulb,
+            "Iluminación Completa",
+            "Todas nuestras áreas están completamente iluminadas para garantizar su seguridad nocturna."),
+
+        new(Icons.Material.Filled.Accessible,
+            "Espacios Accesibles",
+            "Áreas especiales para personas con discapacidad cercanas a todas las entradas principales."),
+    };
+
+    private readonly List<VehicleItem> _vehiculos = new()
+    {
+        new("🚗", "Automóviles",        "Espacios amplios y seguros para vehículos particulares."),
+        new("🚙", "SUVs y Camionetas",  "Parqueos diseñados para vehículos medianos y grandes."),
+        new("🚐", "Vans y Pickups",     "Espacios amplios para transporte comercial y familiar."),
+        new("🚌", "Autobuses",          "Área exclusiva para transporte colectivo."),
+        new("🏍️", "Motocicletas",       "Zona segura y exclusiva para motos."),
+        new("🚛", "Vehículos de Carga", "Espacios reforzados para transporte pesado."),
+    };
+
+    private readonly List<FaqItem> _faqs = new()
+    {
+        new("¿Necesito reservar espacio de parqueo con anticipación?",
+            "No es necesario. Contamos con capacidad para más de 500 vehículos, lo que garantiza disponibilidad para todos nuestros visitantes. El parqueo se asigna por orden de llegada."),
+
+        new("¿El parqueo es seguro?",
+            "Absolutamente. Contamos con vigilancia las 24 horas, sistema de cámaras de seguridad, control de acceso y personal capacitado. Su vehículo estará protegido durante todo el evento."),
+
+        new("¿Hay espacios para vehículos grandes o autobuses?",
+            "Sí, tenemos áreas especialmente diseñadas para vehículos de gran tamaño, incluyendo autobuses y camiones. Notifíquenos con anticipación para coordinar el espacio adecuado."),
+
+        new("¿Qué tan cerca está el parqueo de los salones?",
+            "Nuestras áreas de parqueo están estratégicamente ubicadas con acceso directo a todos los salones del centro de convenciones. El recorrido máximo es de 3-5 minutos caminando."),
+    };
+}

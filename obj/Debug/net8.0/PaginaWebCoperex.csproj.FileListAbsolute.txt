@@ -1,11 +1,3 @@
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.csproj.AssemblyReference.cache
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\rpswa.dswa.cache.json
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.GeneratedMSBuildEditorConfig.editorconfig
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.AssemblyInfoInputs.cache
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.AssemblyInfo.cs
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.csproj.CoreCompileInputs.cache
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.MvcApplicationPartsAssemblyInfo.cache
-D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.sourcelink.json
 D:\PaginaCOPEREX\PaginaWebCoperex\bin\Debug\net8.0\appsettings.Development.json
 D:\PaginaCOPEREX\PaginaWebCoperex\bin\Debug\net8.0\appsettings.json
 D:\PaginaCOPEREX\PaginaWebCoperex\bin\Debug\net8.0\PaginaWebCoperex.staticwebassets.runtime.json
@@ -189,6 +181,14 @@ D:\PaginaCOPEREX\PaginaWebCoperex\bin\Debug\net8.0\runtimes\win\lib\net6.0\Syste
 D:\PaginaCOPEREX\PaginaWebCoperex\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 D:\PaginaCOPEREX\PaginaWebCoperex\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\PaginaCOPEREX\PaginaWebCoperex\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.csproj.AssemblyReference.cache
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.GeneratedMSBuildEditorConfig.editorconfig
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.AssemblyInfoInputs.cache
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.AssemblyInfo.cs
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.csproj.CoreCompileInputs.cache
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.MvcApplicationPartsAssemblyInfo.cache
+D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\PaginaWebCoperex.sourcelink.json
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\rjimswa.dswa.cache.json
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 D:\PaginaCOPEREX\PaginaWebCoperex\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json

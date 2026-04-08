@@ -11,6 +11,8 @@
 
 @implements IDisposable
 
+
+
 <!-- ===== DESKTOP ===== -->
 <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2"
           Style="width: 100%;" Class="d-none d-md-flex">
@@ -25,7 +27,7 @@
     <MudButton Href="/" StartIcon="@Icons.Material.Filled.Home"
                Color="Color.Inherit" Variant="Variant.Text">Inicio</MudButton>
 
-    <MudButton Href="ResponderEncuesta" StartIcon="@Icons.Material.Filled.Info"
+    <MudButton Href="QuienesSomos" StartIcon="@Icons.Material.Filled.Info"
                Color="Color.Inherit" Variant="Variant.Text">Quiénes Somos</MudButton>
 
     <MudMenu Label="Nuestros Espacios" EndIcon="@Icons.Material.Filled.ArrowDropDown"
@@ -33,8 +35,9 @@
              AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
         <MudMenuItem>Nuestras Áreas</MudMenuItem>
         <MudMenuItem>Patrimonios Nacionales</MudMenuItem>
-        <MudMenuItem>Parqueos</MudMenuItem>
+        <MudMenuItem Href="/Parqueos">Parqueos</MudMenuItem>
         <MudMenuItem>Servicios Adicionales</MudMenuItem>
+        <MudMenuItem Href="/ComoLlegar">Cómo llegar</MudMenuItem>
     </MudMenu>
 
     <MudButton Href="INTERFER" StartIcon="@Icons.Material.Filled.Info"
@@ -44,7 +47,7 @@
              Color="Color.Inherit" Variant="Variant.Text"
              AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
         <MudMenuItem>Eventos</MudMenuItem>
-        <MudMenuItem>Promociona tu marca y evento</MudMenuItem>
+        <MudMenuItem Href="/PromocionMarcas">Promociona tu marca y evento</MudMenuItem>
     </MudMenu>
 
     <MudMenu Label="Transparencia" EndIcon="@Icons.Material.Filled.ArrowDropDown"
@@ -120,10 +123,14 @@
 
         <MudNavGroup Title="Nuestros Espacios"
                      Icon="@Icons.Material.Filled.Domain" Expanded="false">
-            <MudNavLink OnClick="CloseDrawer">Nuestras Áreas</MudNavLink>
-            <MudNavLink OnClick="CloseDrawer">Patrimonios Nacionales</MudNavLink>
-            <MudNavLink OnClick="CloseDrawer">Parqueos</MudNavLink>
-            <MudNavLink OnClick="CloseDrawer">Servicios Adicionales</MudNavLink>
+            <MudNavLink OnClick="CloseDrawer"
+                        Style="background-color:#1d386b; color:white;"
+                        Class="nav-link-azul">
+                Nuestras Áreas
+            </MudNavLink>
+            <MudNavLink OnClick="CloseDrawer" Class="nav-link-azul">Patrimonios Nacionales</MudNavLink>
+            <MudNavLink OnClick="CloseDrawer" Class="nav-link-azul">Parqueos</MudNavLink>
+            <MudNavLink OnClick="CloseDrawer" Class="nav-link-azul">Servicios Adicionales</MudNavLink>
         </MudNavGroup>
 
         <MudNavLink Href="INTERFER" Icon="@Icons.Material.Filled.Info"
@@ -139,8 +146,8 @@
 
         <MudNavGroup Title="Transparencia"
                      Icon="@Icons.Material.Filled.Balance" Expanded="false">
-            <MudNavLink OnClick="CloseDrawer">Información Pública</MudNavLink>
-            <MudNavLink OnClick="CloseDrawer">Memorias Laborales</MudNavLink>
+            <MudNavLink OnClick="CloseDrawer" Class="nav-link-azul">Información Pública</MudNavLink>
+            <MudNavLink OnClick="CloseDrawer" Class="nav-link-azul">Memorias Laborales</MudNavLink>
         </MudNavGroup>
 
         <MudDivider Class="my-2" />

@@ -1,0 +1,1116 @@
+@page "/QuienesSomos"
+
+<PageTitle>COPEREX - Quiénes Somos</PageTitle>
+
+<style>
+
+
+     :root {
+        --azul: #1d386b;
+        --azul-dark: #0d1f3c;
+        --azul-light: rgba(29,56,107,0.07);
+        --naranja: #FF8C00;
+        --naranja-dark: #d97200;
+        --naranja-glow: rgba(255,140,0,0.28);
+        --gris-texto: #4a4a6a;
+        --gris-claro: #f4f7fc;
+        --font-title: 'Georgia', 'Times New Roman', serif;
+        --font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(32px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+    @@keyframes slideRight {
+        from { opacity: 0; transform: translateX(-40px); }
+        to   { opacity: 1; transform: translateX(0); }
+    }
+    @@keyframes pulse-ring {
+        0%   { box-shadow: 0 0 0 0 var(--naranja-glow); }
+        70%  { box-shadow: 0 0 0 16px rgba(255,140,0,0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,140,0,0); }
+    }
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-10px); }
+    }
+    /* ===== HERO ===== */
+    .qs-hero {
+        position: relative;
+        height: 90vh;
+        min-height: 550px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-top: -64px; /* compensa el AppBar de MudBlazor */
+    }
+
+    .qs-hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+
+    .qs-hero-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .qs-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(29,56,107,0.85) 0%, rgba(13,31,92,0.75) 100%);
+    }
+
+    .qs-hero-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: white;
+        padding: 0 20px;
+        max-width: 800px;
+    }
+
+    .qs-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 50px;
+        padding: 8px 20px;
+        font-size: 14px;
+        margin-bottom: 24px;
+        backdrop-filter: blur(4px);
+    }
+
+    .qs-hero-title {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+
+    .qs-highlight {
+        color: #df7226;
+    }
+
+    .qs-hero-desc {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 32px;
+        line-height: 1.7;
+    }
+
+    .qs-stats-row {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-bottom: 36px;
+        flex-wrap: wrap;
+    }
+
+    .qs-stat-item {
+        text-align: center;
+    }
+
+    .qs-stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #df7226;
+        display: block;
+    }
+
+    .qs-stat-label {
+        font-size: 0.85rem;
+        opacity: 0.85;
+    }
+
+    .qs-hero-btns {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* ── ABOUT ── */
+    .qs-about {
+        padding: 100px 20px;
+        background: white;
+        overflow: hidden;
+    }
+
+    .qs-about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 72px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: center;
+    }
+
+    .qs-about-img-wrap {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 32px 80px rgba(29,56,107,0.18);
+    }
+
+    .qs-about-img-wrap::before {
+        content: '';
+        position: absolute;
+        top: -3px; left: -3px; right: -3px; bottom: -3px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--naranja), var(--azul));
+        z-index: -1;
+    }
+
+    .qs-about-img-wrap img {
+        width: 100%;
+        height: 440px;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .qs-about-img-wrap:hover img { transform: scale(1.04); }
+
+    .qs-about-badge {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        background: var(--naranja);
+        color: white;
+        font-weight: 800;
+        font-size: 1rem;
+        padding: 10px 22px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(255,140,0,0.4);
+        letter-spacing: 1px;
+    }
+
+    .qs-about-float-tag {
+        position: absolute;
+        top: 24px;
+        right: -16px;
+        background: white;
+        border-left: 4px solid var(--naranja);
+        border-radius: 10px 0 0 10px;
+        padding: 12px 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        font-size: 0.85rem;
+        color: var(--azul);
+        font-weight: 700;
+        line-height: 1.4;
+    }
+
+    .qs-about-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--naranja);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .qs-about-title {
+        font-family: var(--font-title);
+        font-size: 2.6rem;
+        font-weight: 900;
+        color: var(--azul);
+        margin-bottom: 22px;
+        line-height: 1.2;
+    }
+
+    .qs-about-text {
+        color: var(--gris-texto);
+        line-height: 1.85;
+        margin-bottom: 16px;
+        font-size: 0.97rem;
+    }
+
+    .qs-feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 28px 0 36px;
+    }
+
+    .qs-feature-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 18px;
+        border-radius: 12px;
+        background: var(--gris-claro);
+        border-left: 3px solid var(--naranja);
+        transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+        cursor: default;
+    }
+
+    .qs-feature-item:hover {
+        background: white;
+        transform: translateX(6px);
+        box-shadow: 0 4px 18px rgba(29,56,107,0.09);
+    }
+
+    .qs-feature-icon {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .qs-feature-text strong {
+        display: block;
+        color: var(--azul);
+        font-weight: 700;
+        font-size: 0.92rem;
+    }
+
+    .qs-feature-text span {
+        font-size: 0.83rem;
+        color: #888;
+    }
+
+    /* ── MISIÓN / VISIÓN ── */
+    .qs-mv {
+        padding: 100px 20px;
+        background: var(--azul);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .qs-mv::before {
+        content: '';
+        position: absolute;
+        top: -80px; right: -80px;
+        width: 400px; height: 400px;
+        border-radius: 50%;
+        background: rgba(255,140,0,0.07);
+        pointer-events: none;
+    }
+
+    .qs-mv::after {
+        content: '';
+        position: absolute;
+        bottom: -100px; left: -60px;
+        width: 320px; height: 320px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.03);
+        pointer-events: none;
+    }
+
+    .qs-mv .qs-section-header h2 { color: white; }
+    .qs-mv .qs-section-header p  { color: rgba(255,255,255,0.6); }
+
+    .qs-mv-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        max-width: 960px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .qs-mv-card {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.12);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 44px 36px;
+        text-align: center;
+        color: white;
+        transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .qs-mv-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--naranja), #ffb347);
+        border-radius: 20px 20px 0 0;
+    }
+
+    .qs-mv-card:hover {
+        background: rgba(255,255,255,0.10);
+        transform: translateY(-8px);
+        box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    }
+
+    .qs-mv-icon {
+        width: 72px;
+        height: 72px;
+        background: linear-gradient(135deg, var(--naranja), var(--naranja-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 22px;
+        box-shadow: 0 8px 24px rgba(255,140,0,0.38);
+        animation: float 3.2s ease-in-out infinite;
+    }
+
+    .qs-mv-card:nth-child(2) .qs-mv-icon { animation-delay: 0.9s; }
+
+    .qs-mv-card h3 {
+        font-family: var(--font-title);
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: white;
+        margin-bottom: 16px;
+        letter-spacing: 3px;
+    }
+
+    .qs-mv-card p {
+        color: rgba(255,255,255,0.78);
+        line-height: 1.85;
+        font-size: 0.95rem;
+    }
+
+    /* ── SECTION HEADER ── */
+    .qs-section-header {
+        text-align: center;
+        margin-bottom: 56px;
+    }
+
+    .qs-section-header h2 {
+        font-family: var(--font-title);
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .qs-section-header p {
+        color: var(--gris-texto);
+        font-size: 1.05rem;
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    /* ── SERVICIOS ── */
+    .qs-servicios {
+        padding: 100px 20px;
+        background: var(--gris-claro);
+    }
+
+    .qs-servicios-badge {
+        display: inline-block;
+        color: var(--naranja);
+        font-weight: 800;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+    }
+
+    .qs-servicios-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .qs-servicio-card {
+        background: white;
+        border-radius: 20px;
+        padding: 36px 28px;
+        transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .qs-servicio-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--azul), var(--naranja));
+        transform: scaleX(0);
+        transition: transform 0.35s ease;
+        transform-origin: left;
+    }
+
+    .qs-servicio-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 28px 56px rgba(29,56,107,0.13);
+        border-color: rgba(29,56,107,0.06);
+    }
+
+    .qs-servicio-card:hover::after { transform: scaleX(1); }
+
+    .qs-servicio-num {
+        position: absolute;
+        top: 18px; right: 22px;
+        font-family: var(--font-title);
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: var(--azul-light);
+        line-height: 1;
+        user-select: none;
+    }
+
+    .qs-servicio-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--azul), var(--naranja));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 22px;
+        color: white;
+        transition: transform 0.3s ease;
+    }
+
+    .qs-servicio-card:hover .qs-servicio-icon {
+        transform: rotate(-8deg) scale(1.1);
+    }
+
+    .qs-servicio-card h3 {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .qs-servicio-card p {
+        color: var(--gris-texto);
+        line-height: 1.75;
+        font-size: 0.92rem;
+        margin-bottom: 22px;
+    }
+
+    .qs-servicio-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--naranja);
+        font-weight: 700;
+        font-size: 0.88rem;
+        text-decoration: none;
+        transition: gap 0.2s, color 0.2s;
+    }
+    .qs-servicio-link:hover { gap: 12px; color: var(--naranja-dark); }
+
+    /* ── ESTADÍSTICAS ── */
+    .qs-stats {
+        padding: 100px 20px;
+        background: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .qs-stats-bg-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: var(--font-title);
+        font-size: 18rem;
+        font-weight: 900;
+        color: rgba(29,56,107,0.03);
+        white-space: nowrap;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .qs-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        max-width: 960px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .qs-stat-card {
+        text-align: center;
+        padding: 48px 28px;
+        border-radius: 20px;
+        background: var(--gris-claro);
+        border: 2px solid transparent;
+        transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .qs-stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 50%;
+        transform: translateX(-50%);
+        width: 60px; height: 4px;
+        background: linear-gradient(90deg, var(--azul), var(--naranja));
+        border-radius: 0 0 8px 8px;
+        transition: width 0.35s ease;
+    }
+
+    .qs-stat-card:hover {
+        border-color: var(--naranja);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 48px rgba(255,140,0,0.12);
+    }
+
+    .qs-stat-card:hover::before { width: 100%; }
+
+    .qs-stat-icon-wrap {
+        width: 58px;
+        height: 58px;
+        background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 18px;
+        color: white;
+    }
+
+    .qs-stat-big {
+        font-family: var(--font-title);
+        font-size: 3.2rem;
+        font-weight: 900;
+        color: var(--azul);
+        line-height: 1;
+        margin-bottom: 8px;
+    }
+
+    .qs-stat-big sup {
+        font-size: 1.5rem;
+        color: var(--naranja);
+    }
+
+    .qs-stat-desc {
+        font-size: 0.95rem;
+        color: var(--gris-texto);
+        font-weight: 600;
+    }
+
+    /* ── CTA FINAL ── */
+    .qs-cta {
+        padding: 100px 20px;
+        background: linear-gradient(135deg, var(--azul-dark) 0%, var(--azul) 100%);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .qs-cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+
+    /* acentos de esquina */
+    .qs-cta::after {
+        content: '';
+        position: absolute;
+        bottom: -120px; right: -120px;
+        width: 360px; height: 360px;
+        border-radius: 50%;
+        background: rgba(255,140,0,0.08);
+    }
+
+    .qs-cta-inner { position: relative; z-index: 1; }
+
+    .qs-cta h2 {
+        font-family: var(--font-title);
+        font-size: 2.4rem;
+        font-weight: 900;
+        color: white;
+        margin-bottom: 18px;
+    }
+
+    .qs-cta p {
+        color: rgba(255,255,255,0.72);
+        max-width: 580px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+
+    .qs-cta-btns {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* ── FOOTER ── */
+    .qs-footer {
+        background: var(--azul-dark);
+        color: white;
+        padding: 64px 20px 0;
+    }
+
+    .qs-footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+        gap: 48px;
+        max-width: 1200px;
+        margin: 0 auto 48px;
+    }
+
+    .qs-footer-section h3 {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 22px;
+        color: var(--naranja);
+    }
+
+    .qs-footer-section p,
+    .qs-footer-section a {
+        color: rgba(255,255,255,0.58);
+        text-decoration: none;
+        font-size: 0.9rem;
+        line-height: 2.3;
+        display: block;
+        transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .qs-footer-section a:hover { color: white; padding-left: 6px; }
+
+    .qs-footer-logo img {
+        height: 80px;
+        width: 160px;
+        background: white;
+        border-radius: 10px;
+        padding: 8px;
+        object-fit: contain;
+        margin-bottom: 18px;
+        display: block;
+    }
+
+    .qs-social-links {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .qs-social-btn {
+        width: 38px;
+        height: 38px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,0.65);
+        text-decoration: none;
+        transition: background 0.25s, color 0.25s, transform 0.25s, border-color 0.25s;
+    }
+
+    .qs-social-btn:hover {
+        background: var(--naranja);
+        border-color: var(--naranja);
+        color: white;
+        transform: translateY(-4px);
+    }
+
+    .qs-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: rgba(255,255,255,0.58);
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    .qs-footer-divider {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.07);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .qs-footer-bottom {
+        padding: 24px 0;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .qs-footer-bottom p, .qs-footer-brand {
+        color: rgba(255,255,255,0.38);
+        font-size: 0.82rem;
+    }
+
+    .qs-footer-brand span { color: var(--naranja); font-weight: 700; }
+
+    /* ── RESPONSIVE ── */
+    @@media (max-width: 1024px) {
+        .qs-about-grid     { grid-template-columns: 1fr; gap: 48px; }
+        .qs-mv-grid        { grid-template-columns: 1fr; max-width: 520px; }
+        .qs-servicios-grid { grid-template-columns: repeat(2, 1fr); }
+        .qs-stats-grid     { grid-template-columns: repeat(2, 1fr); }
+        .qs-footer-grid    { grid-template-columns: repeat(2, 1fr); }
+        .qs-hero-line      { display: none; }
+    }
+
+    @@media (max-width: 640px) {
+        .qs-servicios-grid  { grid-template-columns: 1fr; }
+        .qs-stats-grid      { grid-template-columns: 1fr; max-width: 340px; margin: 0 auto; }
+        .qs-footer-grid     { grid-template-columns: 1fr; }
+        .qs-stat-item       { padding: 0 16px; }
+        .qs-footer-bottom   { flex-direction: column; text-align: center; }
+        .qs-about-float-tag { display: none; }
+    }
+</style>
+
+<!-- ===== HERO ===== -->
+<section class="qs-hero">
+    <div class="qs-hero-bg">
+        <div class="qs-hero-overlay"></div>
+        <img src="/ImagenesMyF/Parque-de-la-industria-S4.jpg"
+             alt="Parque de la Industria - COPEREX" loading="eager" />
+    </div>
+
+    <div class="qs-hero-content">
+        <div class="qs-hero-badge">
+            <MudIcon Icon="@Icons.Material.Filled.Star" Size="Size.Small" />
+            <span>Centro de Convenciones #1 en Guatemala</span>
+        </div>
+
+        <h1 class="qs-hero-title">
+            El Espacio Perfecto Para <span class="qs-highlight">Tus Eventos</span>
+        </h1>
+
+        <p class="qs-hero-desc">
+            Centro de convenciones líder en Guatemala con más de 50 años de experiencia.
+            Ofrecemos infraestructura moderna, servicios profesionales y atención excepcional
+            para hacer de tu evento un éxito memorable.
+        </p>
+
+        <div class="qs-stats-row">
+            <div class="qs-stat-item">
+                <span class="qs-stat-number">12</span>
+                <span class="qs-stat-label">Salones</span>
+            </div>
+            <div class="qs-stat-item">
+                <span class="qs-stat-number">30,915+</span>
+                <span class="qs-stat-label">M² Exposición</span>
+            </div>
+            <div class="qs-stat-item">
+                <span class="qs-stat-number">500+</span>
+                <span class="qs-stat-label">Vehículos</span>
+            </div>
+        </div>
+
+        <div class="qs-hero-btns">
+            <MudButton Href="/contacto"
+                       Variant="Variant.Filled"
+                       Style="background-color:#df7226; color:white; font-weight:700; border-radius:50px; padding:12px 28px;"
+                       EndIcon="@Icons.Material.Filled.ArrowForward">
+                Contáctanos Ahora
+            </MudButton>
+            <MudButton Href="#servicios"
+                       Variant="Variant.Outlined"
+                       Style="border-color:white; color:white; font-weight:700; border-radius:50px; padding:12px 28px;">
+                Ver Servicios
+            </MudButton>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ QUIÉNES SOMOS ═══ -->
+<section class="qs-about">
+    <div class="qs-about-grid">
+        <div class="qs-about-img-wrap">
+            <img src="/ImagenesMyF/Parque-de-la-industria-S4.jpg"
+                 alt="Vista exterior del Parque de la Industria" loading="lazy" />
+            <div class="qs-about-badge">Desde 1971</div>
+            <div class="qs-about-float-tag">
+                <strong style="color:#FF8C00; font-size:1.4rem;">50+</strong><br />años de historia
+            </div>
+        </div>
+
+        <div>
+            <span class="qs-about-label">Nuestra Historia</span>
+            <h2 class="qs-about-title">¿Quiénes<br />Somos?</h2>
+
+            <p class="qs-about-text">
+                En el año 1960 se inició la construcción del Parque Centroamérica, conocido popularmente
+                como <strong>Parque de la Industria</strong>. Un parque y centro de exposiciones que proporciona
+                un lugar especial para actividades culturales, artísticas y comerciales.
+            </p>
+            <p class="qs-about-text">
+                Ubicado en la zona 9 de la Ciudad de Guatemala, fue inaugurado en 1971 y desde entonces
+                se han montado <strong>ferias y exposiciones de todo tipo</strong>, consolidándonos como el
+                centro de convenciones líder del país.
+            </p>
+
+            <div class="qs-feature-list">
+                <div class="qs-feature-item">
+                    <div class="qs-feature-icon">
+                        <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Style="color:white;" />
+                    </div>
+                    <div class="qs-feature-text">
+                        <strong>Más de 50 años</strong>
+                        <span>De experiencia y trayectoria</span>
+                    </div>
+                </div>
+                <div class="qs-feature-item">
+                    <div class="qs-feature-icon">
+                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Style="color:white;" />
+                    </div>
+                    <div class="qs-feature-text">
+                        <strong>Ubicación privilegiada</strong>
+                        <span>Zona 9, Ciudad de Guatemala</span>
+                    </div>
+                </div>
+                <div class="qs-feature-item">
+                    <div class="qs-feature-icon">
+                        <MudIcon Icon="@Icons.Material.Filled.AccountBalance" Style="color:white;" />
+                    </div>
+                    <div class="qs-feature-text">
+                        <strong>Patrimonio Nacional</strong>
+                        <span>9 bienes culturales protegidos</span>
+                    </div>
+                </div>
+            </div>
+
+            <a href="/PatrimoniosNacionales" class="qs-btn-azul">
+                Conocer Más
+                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ MISIÓN / VISIÓN ═══ -->
+<section class="qs-mv">
+    <div class="qs-section-header">
+        <h2>Nuestro Compromiso</h2>
+        <p>Misión y Visión que nos impulsan cada día</p>
+    </div>
+    <div class="qs-mv-grid">
+        <div class="qs-mv-card">
+            <div class="qs-mv-icon">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color:white; font-size:1.8rem;" />
+            </div>
+            <h3>MISIÓN</h3>
+            <p>Promocionar, asesorar, comercializar y realizar exposiciones y eventos feriales
+            nacionales e internacionales, con infraestructura moderna y un alto servicio al cliente.</p>
+        </div>
+        <div class="qs-mv-card">
+            <div class="qs-mv-icon">
+                <MudIcon Icon="@Icons.Material.Filled.Visibility" Style="color:white; font-size:1.8rem;" />
+            </div>
+            <h3>VISIÓN</h3>
+            <p>Ser reconocida como la entidad líder para la organización y desarrollo de exposiciones
+            y eventos feriales, culturales, de entretenimiento artísticos y sociales, mediante la
+            excelencia en calidad y servicio al cliente.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ SERVICIOS ═══ -->
+<section class="qs-servicios" id="servicios">
+    <div class="qs-section-header">
+        <span class="qs-servicios-badge">Nuestros Servicios</span>
+        <h2>Todo lo que Necesitas en un Solo Lugar</h2>
+        <p>Infraestructura completa y servicios profesionales para garantizar el éxito de tu evento</p>
+    </div>
+
+    <div class="qs-servicios-grid">
+        @{ int idx = 1; }
+        @foreach (var s in _servicios)
+        {
+            <div class="qs-servicio-card">
+                <span class="qs-servicio-num">@idx.ToString("D2")</span>
+                <div class="qs-servicio-icon">
+                    <MudIcon Icon="@s.Icon" Style="color:white; font-size:1.7rem;" />
+                </div>
+                <h3>@s.Titulo</h3>
+                <p>@s.Descripcion</p>
+                <a href="@s.Href" class="qs-servicio-link">
+                    @s.LinkText
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+                </a>
+            </div>
+            idx++;
+        }
+    </div>
+</section>
+
+<!-- ═══ ESTADÍSTICAS ═══ -->
+<section class="qs-stats">
+    <div class="qs-stats-bg-text">50+</div>
+    <div class="qs-section-header">
+        <h2>Números que nos Respaldan</h2>
+        <p>Más de 50 años ofreciendo excelencia en cada evento</p>
+    </div>
+    <div class="qs-stats-grid">
+        <div class="qs-stat-card">
+            <div class="qs-stat-icon-wrap">
+                <MudIcon Icon="@Icons.Material.Filled.People" Style="color:white;" />
+            </div>
+            <div class="qs-stat-big">93<sup>%</sup></div>
+            <p class="qs-stat-desc">Satisfacción del Cliente</p>
+        </div>
+        <div class="qs-stat-card">
+            <div class="qs-stat-icon-wrap">
+                <MudIcon Icon="@Icons.Material.Filled.EventNote" Style="color:white;" />
+            </div>
+            <div class="qs-stat-big">238<sup>+</sup></div>
+            <p class="qs-stat-desc">Eventos al Año</p>
+        </div>
+        <div class="qs-stat-card">
+            <div class="qs-stat-icon-wrap">
+                <MudIcon Icon="@Icons.Material.Filled.Domain" Style="color:white;" />
+            </div>
+            <div class="qs-stat-big">30K<sup>+</sup></div>
+            <p class="qs-stat-desc">M² de Exposición</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ CTA FINAL ═══ -->
+<section class="qs-cta">
+    <div class="qs-cta-inner">
+        <h2>¿Listo para Organizar tu Próximo Evento?</h2>
+        <p>Contáctanos hoy y descubre cómo podemos hacer realidad tu evento ideal con
+        nuestra infraestructura de clase mundial y servicio excepcional.</p>
+        <div class="qs-cta-btns">
+            <a href="/contacto" class="qs-btn-primary">
+                Contáctanos Ahora
+                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+            </a>
+            <a href="/Salones" class="qs-btn-secondary">Ver Salones</a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="qs-footer">
+    <div class="qs-footer-grid">
+        <div class="qs-footer-section">
+            <div class="qs-footer-logo">
+                <img src="/ImagenesMyF/LogoCoperex.jpg" alt="Logo COPEREX" />
+            </div>
+            <p>Centro de convenciones líder en Guatemala, ofreciendo espacios de calidad para todo tipo de eventos desde 1971.</p>
+            <div class="qs-social-links">
+                <a href="https://www.facebook.com/parquedelaindustriacoperex" class="qs-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Small" />
+                </a>
+                <a href="https://www.instagram.com/parquedelaindustria/" class="qs-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.CameraAlt" Size="Size.Small" />
+                </a>
+                <a href="https://x.com/ParqIndustriaGt" class="qs-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.AlternateEmail" Size="Size.Small" />
+                </a>
+                <a href="https://www.linkedin.com/company/coperex/" class="qs-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.LinkedIn" Size="Size.Small" />
+                </a>
+            </div>
+        </div>
+
+        <div class="qs-footer-section">
+            <h3>Navegación</h3>
+            <a href="/">Inicio</a>
+            <a href="/QuienesSomos">Quiénes Somos</a>
+            <a href="/Salones">Nuestros Espacios</a>
+            <a href="/INTERFER">INTERFER</a>
+            <a href="/contacto">Contacto</a>
+        </div>
+
+        <div class="qs-footer-section">
+            <h3>Servicios</h3>
+            <a href="/Salones">Alquiler de Salones</a>
+            <a href="#">Eventos Corporativos</a>
+            <a href="#">Ferias Comerciales</a>
+            <a href="#">Eventos Sociales</a>
+            <a href="/PatrimoniosNacionales">Patrimonios Nacionales</a>
+        </div>
+
+        <div class="qs-footer-section">
+            <h3>Contacto</h3>
+            <div class="qs-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>Zona 9, Ciudad de Guatemala</span>
+            </div>
+            <div class="qs-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>info@coperex.com.gt</span>
+            </div>
+            <div class="qs-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.Phone" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>+502 2222-6464 EXT. 157</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="qs-footer-divider" />
+
+    <div class="qs-footer-bottom">
+        <p>&copy; @DateTime.Now.Year COPEREX. Todos los derechos reservados.</p>
+        <p class="qs-footer-brand">Parque de la Industria — <span>Guatemala</span></p>
+    </div>
+</footer>
+
+@code {
+    private record ServicioItem(string Icon, string Titulo, string Descripcion, string Href, string LinkText);
+
+    private readonly List<ServicioItem> _servicios = new()
+    {
+        new(Icons.Material.Filled.MeetingRoom,
+            "12 Salones",
+            "Gran variedad de salones equipados para todo tipo de eventos, desde reuniones corporativas hasta grandes exposiciones.",
+            "/Salones", "Ver Salones"),
+
+        new(Icons.Material.Filled.LocalParking,
+            "Parqueo",
+            "Amplio parque con capacidad para más de 500 vehículos, con seguridad y vigilancia las 24 horas.",
+            "/contacto", "Consultar"),
+
+        new(Icons.Material.Filled.Park,
+            "Eventos al Aire Libre",
+            "Espacios jardinizados perfectos para eventos especiales y experiencias únicas bajo el cielo abierto.",
+            "/contacto", "Más Info"),
+
+        new(Icons.Material.Filled.Festival,
+            "INTERFER",
+            "La feria comercial más importante de fin de año en Guatemala. Un evento imperdible.",
+            "/INTERFER", "Conocer INTERFER"),
+
+        new(Icons.Material.Filled.Security,
+            "Seguridad",
+            "Monitoreo y control profesional dentro de las instalaciones para la tranquilidad de todos.",
+            "/contacto", "Consultar"),
+
+        new(Icons.Material.Filled.ConfirmationNumber,
+            "Taquillas Disponibles",
+            "Sistema de registro y supervisión eficiente del público asistente a los eventos.",
+            "/contacto", "Más Info"),
+    };
+}

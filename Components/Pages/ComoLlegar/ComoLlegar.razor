@@ -1,0 +1,1244 @@
+@page "/ComoLlegar"
+
+<PageTitle>COPEREX - Cómo Llegar</PageTitle>
+
+<style>
+    :root {
+        --azul: #1d386b;
+        --azul-dark: #0d1f3c;
+        --azul-light: rgba(29,56,107,0.07);
+        --naranja: #FF8C00;
+        --naranja-dark: #d97200;
+        --naranja-glow: rgba(255,140,0,0.28);
+        --gris-texto: #4a4a6a;
+        --gris-claro: #f4f7fc;
+        --font-title: 'Georgia', 'Times New Roman', serif;
+    }
+
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(32px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-10px); }
+    }
+    @@keyframes pulse-ring {
+        0%   { box-shadow: 0 0 0 0 var(--naranja-glow); }
+        70%  { box-shadow: 0 0 0 16px rgba(255,140,0,0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,140,0,0); }
+    }
+    @@keyframes pingDot {
+        0%   { transform: scale(1); opacity: 1; }
+        75%  { transform: scale(2.2); opacity: 0; }
+        100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    /* ── HERO ── */
+    .ub-hero {
+        position: relative;
+        height: 88vh;
+        min-height: 560px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-top: -64px;
+    }
+
+    .ub-hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+
+    .ub-hero-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.05);
+        transition: transform 8s ease;
+    }
+
+    .ub-hero:hover .ub-hero-bg img { transform: scale(1.0); }
+
+
+    .ub-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(135deg, var(--azul-dark) 0%, #1a3060 40%, #0f2040 100%);
+}
+
+.ub-hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+.ub-hero-accent {
+    position: absolute;
+    top: 0; right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 50%, rgba(255,140,0,0.06) 100%);
+    z-index: 1;
+}
+
+.ub-hero-letter {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20rem;
+    line-height: 1;
+    z-index: 1;
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.06;
+}
+
+    .ub-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            150deg,
+            rgba(13,31,60,0.95) 0%,
+            rgba(29,56,107,0.82) 50%,
+            rgba(255,140,0,0.10) 100%
+        );
+    }
+
+    .ub-hero-dots {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 28px 28px;
+        z-index: 1;
+    }
+
+    .ub-hero-content {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        color: white;
+        padding: 0 24px;
+        max-width: 860px;
+        animation: fadeUp 0.9s ease both;
+    }
+
+    .ub-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,140,0,0.16);
+        border: 1px solid rgba(255,140,0,0.45);
+        border-radius: 50px;
+        padding: 8px 22px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 28px;
+        backdrop-filter: blur(6px);
+        animation: fadeIn 0.7s 0.2s ease both;
+    }
+
+    .ub-hero-title {
+        font-family: var(--font-title);
+        font-size: clamp(2.4rem, 6vw, 4.5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 22px;
+        animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .ub-highlight { color: var(--naranja); }
+
+    .ub-hero-desc {
+        font-size: 1.08rem;
+        opacity: 0.85;
+        margin: 0 auto 36px;
+        line-height: 1.75;
+        max-width: 640px;
+        animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .ub-hero-btns {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeUp 0.8s 0.55s ease both;
+    }
+
+    /* strip info debajo del hero */
+    .ub-hero-strip {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        z-index: 3;
+        display: flex;
+        justify-content: center;
+        background: rgba(255,255,255,0.06);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .ub-strip-item {
+        flex: 1;
+        max-width: 260px;
+        padding: 20px 16px;
+        text-align: center;
+        border-right: 1px solid rgba(255,255,255,0.1);
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .ub-strip-item:last-child { border-right: none; }
+
+    .ub-strip-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(255,140,0,0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .ub-strip-text strong {
+        display: block;
+        font-size: 0.88rem;
+        font-weight: 700;
+    }
+
+    .ub-strip-text span {
+        font-size: 0.78rem;
+        opacity: 0.7;
+    }
+
+    /* ── BOTONES ── */
+    .ub-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--naranja);
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+        box-shadow: 0 4px 20px rgba(255,140,0,0.38);
+        animation: pulse-ring 2.8s infinite 2s;
+    }
+    .ub-btn-primary:hover {
+        background: var(--naranja-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(255,140,0,0.5);
+    }
+
+    .ub-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: 2px solid rgba(255,255,255,0.55);
+        border-radius: 50px;
+        padding: 12px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    }
+    .ub-btn-secondary:hover {
+        background: rgba(255,255,255,0.12);
+        border-color: white;
+        transform: translateY(-3px);
+    }
+
+    .ub-btn-azul {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--azul);
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+        box-shadow: 0 4px 20px rgba(29,56,107,0.3);
+    }
+    .ub-btn-azul:hover { background: var(--azul-dark); transform: translateY(-3px); }
+
+    /* ── SECTION HEADER ── */
+    .ub-section-header { text-align: center; margin-bottom: 56px; }
+
+    .ub-section-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--naranja);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .ub-section-header h2 {
+        font-family: var(--font-title);
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .ub-section-header p {
+        color: var(--gris-texto);
+        font-size: 1.05rem;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.7;
+    }
+
+    /* ── DIRECCIÓN + MAPA ── */
+    .ub-address {
+        padding: 100px 20px;
+        background: white;
+        overflow: hidden;
+    }
+
+    .ub-address-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 60px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: start;
+    }
+
+    /* tarjeta de dirección */
+    .ub-addr-card {
+        background: var(--gris-claro);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(29,56,107,0.10);
+    }
+
+    .ub-addr-header {
+        background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+        padding: 32px 36px;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .ub-addr-header-icon {
+        width: 56px;
+        height: 56px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .ub-addr-header h3 {
+        font-family: var(--font-title);
+        font-size: 1.4rem;
+        font-weight: 900;
+        margin-bottom: 4px;
+    }
+
+    .ub-addr-header p { font-size: 0.85rem; opacity: 0.75; }
+
+    .ub-addr-body { padding: 32px 36px; }
+
+    .ub-addr-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(29,56,107,0.08);
+    }
+
+    .ub-addr-row:last-child { border-bottom: none; }
+
+    .ub-addr-dot {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, var(--azul), var(--naranja));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .ub-addr-row-text strong {
+        display: block;
+        color: var(--azul);
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 2px;
+    }
+
+    .ub-addr-row-text span {
+        color: var(--gris-texto);
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    .ub-addr-actions {
+        display: flex;
+        gap: 12px;
+        padding-top: 24px;
+        flex-wrap: wrap;
+    }
+
+    /* mapa */
+    .ub-map-wrap {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 32px 80px rgba(29,56,107,0.15);
+        position: relative;
+    }
+
+    .ub-map-wrap::before {
+        content: '';
+        position: absolute;
+        top: -3px; left: -3px; right: -3px; bottom: -3px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--naranja), var(--azul));
+        z-index: -1;
+    }
+
+    .ub-map-wrap iframe {
+        width: 100%;
+        height: 500px;
+        border: 0;
+        display: block;
+    }
+
+    /* ── ACCESOS / PLANO ── */
+    .ub-access {
+        padding: 100px 20px;
+        background: var(--gris-claro);
+        overflow: hidden;
+    }
+
+    .ub-access-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 72px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: center;
+    }
+
+    .ub-access-img-wrap {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 32px 80px rgba(29,56,107,0.18);
+    }
+
+    .ub-access-img-wrap::before {
+        content: '';
+        position: absolute;
+        top: -3px; left: -3px; right: -3px; bottom: -3px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--naranja), var(--azul));
+        z-index: -1;
+    }
+
+    .ub-access-img-wrap img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .ub-access-img-wrap:hover img { transform: scale(1.04); }
+
+    .ub-access-badge {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        background: var(--naranja);
+        color: white;
+        font-weight: 800;
+        font-size: 0.9rem;
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(255,140,0,0.4);
+        letter-spacing: 1px;
+    }
+
+    .ub-access-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--naranja);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .ub-access-title {
+        font-family: var(--font-title);
+        font-size: 2.3rem;
+        font-weight: 900;
+        color: var(--azul);
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .ub-access-text {
+        color: var(--gris-texto);
+        line-height: 1.85;
+        margin-bottom: 16px;
+        font-size: 0.97rem;
+    }
+
+    .ub-access-highlight {
+        background: white;
+        border-radius: 14px;
+        padding: 20px 24px;
+        border-left: 4px solid var(--naranja);
+        margin: 24px 0;
+        box-shadow: 0 4px 16px rgba(29,56,107,0.06);
+    }
+
+    .ub-access-highlight strong {
+        display: block;
+        color: var(--azul);
+        font-size: 1rem;
+        font-weight: 800;
+        margin-bottom: 4px;
+    }
+
+    .ub-access-highlight span {
+        color: var(--gris-texto);
+        font-size: 0.92rem;
+        line-height: 1.6;
+    }
+
+    .ub-feature-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        border-radius: 12px;
+        background: white;
+        border-left: 3px solid var(--naranja);
+        margin-bottom: 10px;
+        transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+        cursor: default;
+    }
+
+    .ub-feature-item:hover {
+        transform: translateX(6px);
+        box-shadow: 0 4px 18px rgba(29,56,107,0.09);
+    }
+
+    .ub-feature-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .ub-feature-text strong { display: block; color: var(--azul); font-weight: 700; font-size: 0.9rem; }
+    .ub-feature-text span   { color: #888; font-size: 0.82rem; }
+
+    /* ── TRANSPORTE — 3 cards ── */
+    .ub-transport {
+        padding: 100px 20px;
+        background: var(--azul);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ub-transport::before {
+        content: '';
+        position: absolute;
+        top: -80px; right: -80px;
+        width: 450px; height: 450px;
+        border-radius: 50%;
+        background: rgba(255,140,0,0.07);
+        pointer-events: none;
+    }
+
+    .ub-transport .ub-section-header h2 { color: white; }
+    .ub-transport .ub-section-header p  { color: rgba(255,255,255,0.65); }
+    .ub-transport .ub-section-label     { color: rgba(255,140,0,0.9); }
+
+    .ub-transport-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .ub-transport-card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 20px;
+        padding: 36px 28px;
+        color: white;
+        transition: background 0.3s, transform 0.35s cubic-bezier(.34,1.56,.64,1), border-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ub-transport-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--naranja), #ffb347);
+        border-radius: 20px 20px 0 0;
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .ub-transport-card:hover {
+        background: rgba(255,255,255,0.12);
+        border-color: var(--naranja);
+        transform: translateY(-10px);
+        box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    }
+
+    .ub-transport-card:hover::before { transform: scaleX(1); }
+
+    .ub-transport-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--naranja), var(--naranja-dark));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 22px;
+        box-shadow: 0 8px 24px rgba(255,140,0,0.3);
+        animation: float 3.5s ease-in-out infinite;
+    }
+
+    .ub-transport-card:nth-child(2) .ub-transport-icon { animation-delay: 0.5s; }
+    .ub-transport-card:nth-child(3) .ub-transport-icon { animation-delay: 1s; }
+    .ub-transport-card:hover .ub-transport-icon { animation-play-state: paused; transform: rotate(-8deg) scale(1.1); }
+
+    .ub-transport-card h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .ub-transport-list { list-style: none; padding: 0; margin: 0; }
+
+    .ub-transport-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.8);
+        line-height: 1.5;
+    }
+
+    .ub-transport-list li:last-child { border-bottom: none; }
+
+    .ub-transport-list li::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: var(--naranja);
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 6px;
+    }
+
+    /* ── MAPA GRANDE ── */
+    .ub-map-full {
+        padding: 100px 20px;
+        background: white;
+    }
+
+    .ub-map-full-wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 32px 80px rgba(29,56,107,0.15);
+        border: 3px solid var(--azul);
+    }
+
+    .ub-map-full iframe {
+        width: 100%;
+        height: 520px;
+        border: 0;
+        display: block;
+    }
+
+    /* ── CTA ── */
+    .ub-cta {
+        padding: 100px 20px;
+        background: linear-gradient(135deg, var(--azul-dark) 0%, var(--azul) 100%);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ub-cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+
+    .ub-cta-bg-text {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: var(--font-title);
+        font-size: 16rem;
+        font-weight: 900;
+        color: rgba(255,255,255,0.03);
+        white-space: nowrap;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .ub-cta-inner { position: relative; z-index: 1; }
+
+    .ub-cta h2 {
+        font-family: var(--font-title);
+        font-size: 2.4rem;
+        font-weight: 900;
+        color: white;
+        margin-bottom: 18px;
+    }
+
+    .ub-cta p {
+        color: rgba(255,255,255,0.72);
+        max-width: 580px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+
+    .ub-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    .ub-footer {
+        background: var(--azul-dark);
+        color: white;
+        padding: 64px 20px 0;
+    }
+
+    .ub-footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+        gap: 48px;
+        max-width: 1200px;
+        margin: 0 auto 48px;
+    }
+
+    .ub-footer-section h3 {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 22px;
+        color: var(--naranja);
+    }
+
+    .ub-footer-section p,
+    .ub-footer-section a {
+        color: rgba(255,255,255,0.58);
+        text-decoration: none;
+        font-size: 0.9rem;
+        line-height: 2.3;
+        display: block;
+        transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .ub-footer-section a:hover { color: white; padding-left: 6px; }
+
+    .ub-footer-logo img {
+        height: 80px; width: 160px;
+        background: white;
+        border-radius: 10px;
+        padding: 8px;
+        object-fit: contain;
+        margin-bottom: 18px;
+        display: block;
+    }
+
+    .ub-social-links { display: flex; gap: 10px; margin-top: 16px; }
+
+    .ub-social-btn {
+        width: 38px; height: 38px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,0.65);
+        text-decoration: none;
+        transition: background 0.25s, color 0.25s, transform 0.25s, border-color 0.25s;
+    }
+
+    .ub-social-btn:hover {
+        background: var(--naranja);
+        border-color: var(--naranja);
+        color: white;
+        transform: translateY(-4px);
+    }
+
+    .ub-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: rgba(255,255,255,0.58);
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    .ub-footer-divider {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.07);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .ub-footer-bottom {
+        padding: 24px 0;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .ub-footer-bottom p, .ub-footer-brand { color: rgba(255,255,255,0.38); font-size: 0.82rem; }
+    .ub-footer-brand span { color: var(--naranja); font-weight: 700; }
+
+    /* ── RESPONSIVE ── */
+    @@media (max-width: 1024px) {
+        .ub-address-grid  { grid-template-columns: 1fr; }
+        .ub-access-grid   { grid-template-columns: 1fr; gap: 48px; }
+        .ub-transport-grid { grid-template-columns: 1fr; }
+        .ub-footer-grid   { grid-template-columns: repeat(2, 1fr); }
+        .ub-hero-strip    { display: none; }
+    }
+
+    @@media (max-width: 640px) {
+        .ub-footer-grid   { grid-template-columns: 1fr; }
+        .ub-footer-bottom { flex-direction: column; text-align: center; }
+        .ub-cta-bg-text   { font-size: 6rem; }
+        .ub-map-full iframe { height: 320px; }
+    }
+</style>
+
+<!-- ═══ HERO ═══ -->
+<section class="ub-hero">
+    <div class="ub-hero-bg">
+        <div class="ub-hero-grid"></div>
+        <div class="ub-hero-accent"></div>
+        <div class="ub-hero-letter">📍</div>
+    </div>
+    <div class="ub-hero-dots"></div>
+    ...
+    <div class="ub-hero-dots"></div>
+
+    <div class="ub-hero-content">
+        <div class="ub-hero-badge">
+            <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" Style="color:#FF8C00;" />
+            <span>Zona 9, Ciudad de Guatemala</span>
+        </div>
+
+        <h1 class="ub-hero-title">
+            ¿Cómo <span class="ub-highlight">Llegar</span><br />a COPEREX?
+        </h1>
+
+        <p class="ub-hero-desc">
+            Consulta todas las maneras de llegar al Parque de la Industria.
+            Fácil acceso desde cualquier punto de la ciudad, con amplio
+            estacionamiento seguro para todos nuestros visitantes.
+        </p>
+
+        <div class="ub-hero-btns">
+            <a href="https://maps.app.goo.gl/o6ejmDFjFM2WY84C9"
+               target="_blank" rel="noopener noreferrer"
+               class="ub-btn-primary">
+                Abrir en Google Maps
+                <MudIcon Icon="@Icons.Material.Filled.OpenInNew" Size="Size.Small" />
+            </a>
+            <a href="#accesos" class="ub-btn-secondary">
+                Ver Accesos
+                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+            </a>
+        </div>
+    </div>
+
+    <div class="ub-hero-strip">
+        <div class="ub-strip-item">
+            <div class="ub-strip-icon">
+                <MudIcon Icon="@Icons.Material.Filled.Place" Style="color:#FF8C00;" Size="Size.Small" />
+            </div>
+            <div class="ub-strip-text">
+                <strong>8a Calle 2-33, Zona 9</strong>
+                <span>Ciudad de Guatemala</span>
+            </div>
+        </div>
+        <div class="ub-strip-item">
+            <div class="ub-strip-icon">
+                <MudIcon Icon="@Icons.Material.Filled.DirectionsCar" Style="color:#FF8C00;" Size="Size.Small" />
+            </div>
+            <div class="ub-strip-text">
+                <strong>15-20 min desde el Centro</strong>
+                <span>Calzada San Juan</span>
+            </div>
+        </div>
+        <div class="ub-strip-item">
+            <div class="ub-strip-icon">
+                <MudIcon Icon="@Icons.Material.Filled.LocalParking" Style="color:#FF8C00;" Size="Size.Small" />
+            </div>
+            <div class="ub-strip-text">
+                <strong>500+ espacios de parqueo</strong>
+                <span>Vigilancia 24/7</span>
+            </div>
+        </div>
+        <div class="ub-strip-item">
+            <div class="ub-strip-icon">
+                <MudIcon Icon="@Icons.Material.Filled.AccessTime" Style="color:#FF8C00;" Size="Size.Small" />
+            </div>
+            <div class="ub-strip-text">
+                <strong>Abierto todos los días</strong>
+                <span>Según horario de evento</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ DIRECCIÓN + MAPA PEQUEÑO ═══ -->
+<section class="ub-address">
+    <div class="ub-address-grid">
+        <!-- Tarjeta de dirección -->
+        <div class="ub-addr-card">
+            <div class="ub-addr-header">
+                <div class="ub-addr-header-icon">
+                    <MudIcon Icon="@Icons.Material.Filled.LocationCity" Style="color:white; font-size:1.8rem;" />
+                </div>
+                <div>
+                    <h3>Parque de la Industria</h3>
+                    <p>Sede COPEREX — Desde 1961</p>
+                </div>
+            </div>
+
+            <div class="ub-addr-body">
+                @foreach (var d in _datos)
+                {
+                    <div class="ub-addr-row">
+                        <div class="ub-addr-dot">
+                            <MudIcon Icon="@d.Icon" Style="color:white;" Size="Size.Small" />
+                        </div>
+                        <div class="ub-addr-row-text">
+                            <strong>@d.Label</strong>
+                            <span>@d.Valor</span>
+                        </div>
+                    </div>
+                }
+
+                <div class="ub-addr-actions">
+                    <a href="https://maps.app.goo.gl/o6ejmDFjFM2WY84C9"
+                       target="_blank" rel="noopener noreferrer"
+                       class="ub-btn-primary">
+                        <MudIcon Icon="@Icons.Material.Filled.Map" Size="Size.Small" />
+                        Cómo Llegar
+                    </a>
+                    <a href="/contacto" class="ub-btn-azul">
+                        Contactar
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mapa embed -->
+        <div class="ub-map-wrap">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2730.0156073543812!2d-90.52440588773327!3d14.60903731611401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8589a3d506898b87%3A0x83c0af9f5a86c02a!2sParque%20de%20la%20Industria!5e0!3m2!1ses-419!2sgt!4v1770744756267!5m2!1ses-419!2sgt"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Mapa COPEREX">
+            </iframe>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ ACCESOS / PLANO ═══ -->
+<section class="ub-access" id="accesos">
+    <div class="ub-access-grid">
+        <div class="ub-access-img-wrap">
+            <img src="/ImagenesMyF/PlanosCoperex.png"
+                 alt="Plano del Parque de la Industria" loading="lazy" />
+            <div class="ub-access-badge">Puerta 2 — Principal</div>
+        </div>
+
+        <div>
+            <span class="ub-access-label">Accesos Recomendados</span>
+            <h2 class="ub-access-title">¿Cómo Ingresar al<br />Parque de la Industria?</h2>
+
+            <p class="ub-access-text">
+                COPEREX ofrece amplios espacios de estacionamiento dentro de sus instalaciones,
+                preparados para recibir cualquier tipo de evento. Al momento de visitarnos,
+                le recomendamos utilizar nuestra entrada principal:
+            </p>
+
+            <div class="ub-access-highlight">
+                <strong>Puerta 2 — Entrada Principal</strong>
+                <span>
+                    Dirección: 8a Calle 2-33, Zona 9<br />
+                    Acceso: 8a Calle Pista Izquierda, 223
+                </span>
+            </div>
+
+            <p class="ub-access-text">
+                Fácil acceso desde el Centro de la ciudad (15-20 min), Carretera Panamericana,
+                Boulevard Vista Hermosa y Calzada San Juan. Cerca de centros comerciales.
+            </p>
+
+            <div class="ub-feature-item">
+                <div class="ub-feature-icon">
+                    <MudIcon Icon="@Icons.Material.Filled.Shield" Style="color:white;" Size="Size.Small" />
+                </div>
+                <div class="ub-feature-text">
+                    <strong>Seguridad garantizada</strong>
+                    <span>Cuidado de su vehículo las 24 horas, los 7 días de la semana</span>
+                </div>
+            </div>
+
+            <div class="ub-feature-item">
+                <div class="ub-feature-icon">
+                    <MudIcon Icon="@Icons.Material.Filled.LocalParking" Style="color:white;" Size="Size.Small" />
+                </div>
+                <div class="ub-feature-text">
+                    <strong>Más de 500 espacios</strong>
+                    <span>Capacidad para todo tipo de vehículos, desde autos hasta autobuses</span>
+                </div>
+            </div>
+
+            <div class="ub-feature-item">
+                <div class="ub-feature-icon">
+                    <MudIcon Icon="@Icons.Material.Filled.Accessible" Style="color:white;" Size="Size.Small" />
+                </div>
+                <div class="ub-feature-text">
+                    <strong>Espacios accesibles</strong>
+                    <span>Áreas reservadas para personas con discapacidad cerca de todas las entradas</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ TRANSPORTE ═══ -->
+<section class="ub-transport">
+    <div class="ub-section-header">
+        <span class="ub-section-label">Todas las Opciones</span>
+        <h2>Opciones de Transporte</h2>
+        <p>Llegue cómodo sin importar cómo se movilice</p>
+    </div>
+
+    <div class="ub-transport-grid">
+        @foreach (var t in _transporte)
+        {
+            <div class="ub-transport-card">
+                <div class="ub-transport-icon">
+                    <MudIcon Icon="@t.Icon" Style="color:white; font-size:1.8rem;" />
+                </div>
+                <h3>@t.Titulo</h3>
+                <ul class="ub-transport-list">
+                    @foreach (var item in t.Items)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</section>
+
+
+<!-- ═══ CTA ═══ -->
+<section class="ub-cta">
+    <div class="ub-cta-bg-text">COPEREX</div>
+    <div class="ub-cta-inner">
+        <h2>¿Planea Visitarnos?</h2>
+        <p>
+            Nuestro equipo estará encantado de recibirle. Cuéntenos sobre su evento
+            o consulta y le ayudamos a organizar todo desde su llegada.
+        </p>
+        <div class="ub-cta-btns">
+            <a href="https://maps.app.goo.gl/o6ejmDFjFM2WY84C9"
+               target="_blank" rel="noopener noreferrer"
+               class="ub-btn-primary">
+                Abrir en Google Maps
+                <MudIcon Icon="@Icons.Material.Filled.OpenInNew" Size="Size.Small" />
+            </a>
+            <a href="/contacto" class="ub-btn-secondary">Contáctenos</a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="ub-footer">
+    <div class="ub-footer-grid">
+        <div class="ub-footer-section">
+            <div class="ub-footer-logo">
+                <img src="/ImagenesMyF/LogoCoperex.jpg" alt="Logo COPEREX" />
+            </div>
+            <p>Centro de convenciones líder en Guatemala, ofreciendo espacios de calidad para todo tipo de eventos desde 1971.</p>
+            <div class="ub-social-links">
+                <a href="https://www.facebook.com/parquedelaindustriacoperex" class="ub-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Small" />
+                </a>
+                <a href="https://www.instagram.com/parquedelaindustria/" class="ub-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.CameraAlt" Size="Size.Small" />
+                </a>
+                <a href="https://x.com/ParqIndustriaGt" class="ub-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.AlternateEmail" Size="Size.Small" />
+                </a>
+                <a href="https://www.linkedin.com/company/coperex/" class="ub-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.LinkedIn" Size="Size.Small" />
+                </a>
+            </div>
+        </div>
+
+        <div class="ub-footer-section">
+            <h3>Navegación</h3>
+            <a href="/">Inicio</a>
+            <a href="/QuienesSomos">Quiénes Somos</a>
+            <a href="/Salones">Nuestros Espacios</a>
+            <a href="/INTERFER">INTERFER</a>
+            <a href="/contacto">Contacto</a>
+        </div>
+
+        <div class="ub-footer-section">
+            <h3>Servicios</h3>
+            <a href="/Salones">Alquiler de Salones</a>
+            <a href="#">Eventos Corporativos</a>
+            <a href="#">Ferias Comerciales</a>
+            <a href="#">Eventos Sociales</a>
+            <a href="/Parqueos">Parqueo</a>
+        </div>
+
+        <div class="ub-footer-section">
+            <h3>Contacto</h3>
+            <div class="ub-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>8a Calle 2-33, Zona 9, Ciudad de Guatemala</span>
+            </div>
+            <div class="ub-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>info@coperex.com.gt</span>
+            </div>
+            <div class="ub-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.Phone" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>+502 2222-6464 EXT. 157</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="ub-footer-divider" />
+
+    <div class="ub-footer-bottom">
+        <p>&copy; @DateTime.Now.Year COPEREX. Todos los derechos reservados.</p>
+        <p class="ub-footer-brand">Parque de la Industria — <span>Guatemala</span></p>
+    </div>
+</footer>
+
+@code {
+    private record DatoItem(string Icon, string Label, string Valor);
+    private record TransporteItem(string Icon, string Titulo, List<string> Items);
+
+    private readonly List<DatoItem> _datos = new()
+    {
+        new(Icons.Material.Filled.LocationOn,  "Dirección",     "8a Calle 2-33, Zona 9, Ciudad de Guatemala"),
+        new(Icons.Material.Filled.MeetingRoom, "Entrada",       "Puerta 2 — 8a Calle Pista Izquierda, 223"),
+        new(Icons.Material.Filled.Phone,       "Teléfono",      "+502 2222-6464 EXT. 157"),
+        new(Icons.Material.Filled.AccessTime,  "Horario",       "Lunes a Domingo — Según horario de evento"),
+        new(Icons.Material.Filled.Email,       "Correo",        "info@coperex.com.gt"),
+    };
+
+    private readonly List<TransporteItem> _transporte = new()
+    {
+        new(Icons.Material.Filled.DirectionsCar,
+            "En Vehículo Particular",
+            new List<string> {
+                "Desde Centro: 15-20 min por Calzada San Juan",
+                "Desde Carretera Panamericana: Acceso directo",
+                "Desde Zona Viva: 10-15 min por Boulevard Vista Hermosa",
+                "500+ espacios de parqueo con vigilancia 24/7",
+                "Entrada por Puerta 2 — 8a Calle Pista Izquierda",
+            }),
+
+        new(Icons.Material.Filled.DirectionsBus,
+            "Transporte Público",
+            new List<string> {
+                "Transmetro: Parada cercana en CA-9",
+                "Buses urbanos: Rutas 83, 101, 202",
+                "Taxi o Uber: Acceso directo a la puerta principal",
+                "Paradas de bus a 5 minutos caminando",
+                "Servicio disponible toda la semana",
+            }),
+
+        new(Icons.Material.Filled.PushPin,
+            "Puntos de Referencia",
+            new List<string> {
+                "Monumento a la Industria (dentro del parque)",
+                "Cerca de C.C. Miraflores",
+                "A 2 km de Roosevelt",
+                "Frente a Carretera al Pacífico",
+                "Visible desde CA-9 Sur",
+            }),
+    };
+}

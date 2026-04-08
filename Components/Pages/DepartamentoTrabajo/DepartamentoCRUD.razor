@@ -1,0 +1,125 @@
+﻿@page "/departamento/agregar"
+@page "/departamento/agregar/{DepartamentoId:int?}"
+
+@using PaginaWebCoperex.Models
+@using PaginaWebCoperex.Services.DepartamentoServices
+@using MudBlazor
+
+@inject IDepartamentoService DepartamentoServices
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+
+    <h3 style="margin-bottom: 20px;">@(DepartamentoId.HasValue ? "Editar Departamento" : "Nuevo Departamento")</h3>
+
+    <MudPaper Elevation="3" Class="pa-4">
+        <MudText Typo="Typo.h5" Class="mb-4 text-center" Align="Align.Center">
+            @(DepartamentoId.HasValue ? "Editar Departamento" : "Agregar Nuevo Departamento")
+        </MudText>
+
+        <EditForm Model="departamentotrabajo" OnValidSubmit="HandleSubmit">
+            <DataAnnotationsValidator />
+
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField Label="DepartamentoTrabajo"
+                                  @bind-Value="departamentotrabajo.NombreDepartamento"
+                                  For="@(() => departamentotrabajo.NombreDepartamento)"
+                                  Variant="Variant.Outlined"
+                                  Required="true"
+                                  RequiredError="El nombre del departamento es requerido"
+                                  MaxLength="100"
+                                  Counter="100"
+                                  Immediate="true" />
+                </MudItem>
+            </MudGrid>
+
+            <div class="d-flex justify-content-between mt-4">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Secondary"
+                           StartIcon="@Icons.Material.Filled.ArrowBack"
+                           OnClick="@(() => NavigationManager.NavigateTo("/Departamento"))">
+                    Regresar
+                </MudButton>
+
+                <MudButton ButtonType="ButtonType.Submit"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Save"
+                           Disabled="@isSubmitting">
+                    @if (isSubmitting)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">Guardando...</MudText>
+                    }
+                    else
+                    {
+                        <MudText>@(DepartamentoId.HasValue ? "Actualizar" : "Guardar")</MudText>
+                    }
+                </MudButton>
+            </div>
+
+        </EditForm>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    [Parameter] public int? DepartamentoId { get; set; }
+
+    private DepartamentoTrabajo departamentotrabajo = new DepartamentoTrabajo();
+    private bool isSubmitting = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (DepartamentoId.HasValue)
+        {
+            try
+            {
+                departamentotrabajo = await DepartamentoServices.GetByIdAsync(DepartamentoId.Value);
+            }
+            catch (Exception ex)
+            {
+                Snackbar.Add($"Error al cargar el genero: {ex.Message}", Severity.Error);
+                NavigationManager.NavigateTo("/Genero");
+            }
+        }
+        else
+        {
+            departamentotrabajo = new DepartamentoTrabajo();
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+        StateHasChanged();
+
+        try
+        {
+            var result = await DepartamentoServices.AddUpdateAsync(departamentotrabajo);
+
+            if (result)
+            {
+                var message = DepartamentoId.HasValue ? "Departamento actualizado correctamente" : "Departamento creado correctamente";
+                Snackbar.Add(message, Severity.Success);
+                NavigationManager.NavigateTo("/Departamento");
+            }
+            else
+            {
+                Snackbar.Add("Error al guardar el Departamento", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isSubmitting = false;
+            StateHasChanged();
+        }
+    }
+
+}

@@ -1,0 +1,1492 @@
+@page "/PromocionMarcas"
+
+<PageTitle>COPEREX - Promociona tu Marca y Evento</PageTitle>
+
+<style>
+    :root {
+        --azul: #1d386b;
+        --azul-dark: #0d1f3c;
+        --azul-light: rgba(29,56,107,0.07);
+        --naranja: #FF8C00;
+        --naranja-dark: #d97200;
+        --naranja-glow: rgba(255,140,0,0.28);
+        --gris-texto: #4a4a6a;
+        --gris-claro: #f4f7fc;
+        --font-title: 'Georgia', 'Times New Roman', serif;
+    }
+
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(32px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-10px); }
+    }
+    @@keyframes pulse-ring {
+        0%   { box-shadow: 0 0 0 0 var(--naranja-glow); }
+        70%  { box-shadow: 0 0 0 16px rgba(255,140,0,0); }
+        100% { box-shadow: 0 0 0 0 rgba(255,140,0,0); }
+    }
+    @@keyframes marquee {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+    }
+    @@keyframes slideIn {
+        from { opacity: 0; transform: translateX(40px); }
+        to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── HERO SPLIT ── */
+    .pm-hero {
+        min-height: 100vh;
+        margin-top: -64px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        overflow: hidden;
+    }
+
+    /* lado izquierdo — texto */
+    .pm-hero-left {
+        background: linear-gradient(150deg, var(--azul-dark) 0%, var(--azul) 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 120px 60px 80px;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    /* cuadrícula de fondo */
+    .pm-hero-left::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: 48px 48px;
+        z-index: 0;
+    }
+
+    /* acento naranja diagonal */
+    .pm-hero-left::after {
+        content: '';
+        position: absolute;
+        bottom: 0; right: 0;
+        width: 200px; height: 200px;
+        background: var(--naranja);
+        clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        opacity: 0.12;
+    }
+
+    .pm-hero-left-inner { position: relative; z-index: 1; }
+
+    .pm-hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,140,0,0.16);
+        border: 1px solid rgba(255,140,0,0.4);
+        border-radius: 50px;
+        padding: 7px 18px;
+        font-size: 12px;
+        font-weight: 700;
+        color: white;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 32px;
+        width: fit-content;
+        animation: fadeIn 0.6s 0.2s ease both;
+    }
+
+    .pm-hero-title {
+        font-family: var(--font-title);
+        font-size: clamp(2.4rem, 3.5vw, 3.8rem);
+        font-weight: 900;
+        color: white;
+        line-height: 1.1;
+        margin-bottom: 24px;
+        animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .pm-hero-title .pm-hl { color: var(--naranja); }
+
+    .pm-hero-desc {
+        color: rgba(255,255,255,0.78);
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 40px;
+        max-width: 480px;
+        animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .pm-hero-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 40px;
+        animation: fadeUp 0.8s 0.55s ease both;
+    }
+
+    .pm-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 50px;
+        padding: 6px 14px;
+        font-size: 0.83rem;
+        font-weight: 600;
+        color: white;
+        backdrop-filter: blur(4px);
+    }
+
+    .pm-hero-btns {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        animation: fadeUp 0.8s 0.65s ease both;
+    }
+
+    /* lado derecho — imagen */
+    .pm-hero-right {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pm-hero-right img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: scale(1.05);
+        transition: transform 8s ease;
+    }
+
+    .pm-hero:hover .pm-hero-right img { transform: scale(1.0); }
+
+    .pm-hero-right-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, var(--azul) 0%, transparent 40%);
+    }
+
+    /* tarjeta flotante sobre imagen */
+    .pm-hero-float {
+        position: absolute;
+        bottom: 48px;
+        left: -32px;
+        background: white;
+        border-radius: 16px;
+        padding: 20px 28px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        border-left: 4px solid var(--naranja);
+        min-width: 220px;
+        animation: slideIn 0.8s 1s ease both;
+    }
+
+    .pm-hero-float-num {
+        font-family: var(--font-title);
+        font-size: 2.4rem;
+        font-weight: 900;
+        color: var(--azul);
+        line-height: 1;
+    }
+
+    .pm-hero-float-num span { color: var(--naranja); }
+
+    .pm-hero-float p {
+        font-size: 0.82rem;
+        color: var(--gris-texto);
+        margin-top: 4px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* strip de estadísticas debajo del héroe */
+    .pm-stats-strip {
+        background: var(--naranja);
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .pm-stat-cell {
+        padding: 28px 20px;
+        text-align: center;
+        border-right: 1px solid rgba(255,255,255,0.2);
+        color: white;
+    }
+
+    .pm-stat-cell:last-child { border-right: none; }
+
+    .pm-stat-cell-num {
+        font-family: var(--font-title);
+        font-size: 2.2rem;
+        font-weight: 900;
+        line-height: 1;
+        display: block;
+    }
+
+    .pm-stat-cell-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        opacity: 0.85;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 4px;
+        display: block;
+    }
+
+    /* ── TICKER / MARQUEE ── */
+    .pm-ticker {
+        background: var(--azul-dark);
+        overflow: hidden;
+        padding: 14px 0;
+        border-top: 2px solid var(--naranja);
+    }
+
+    .pm-ticker-track {
+        display: flex;
+        gap: 48px;
+        white-space: nowrap;
+        animation: marquee 22s linear infinite;
+        width: max-content;
+    }
+
+    .pm-ticker-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        color: rgba(255,255,255,0.75);
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .pm-ticker-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--naranja);
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    /* ── BOTONES ── */
+    .pm-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--naranja);
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+        box-shadow: 0 4px 20px rgba(255,140,0,0.38);
+        animation: pulse-ring 2.8s infinite 2s;
+    }
+    .pm-btn-primary:hover {
+        background: var(--naranja-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(255,140,0,0.5);
+    }
+
+    .pm-btn-outline-white {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: 2px solid rgba(255,255,255,0.55);
+        border-radius: 50px;
+        padding: 12px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    }
+    .pm-btn-outline-white:hover {
+        background: rgba(255,255,255,0.12);
+        border-color: white;
+        transform: translateY(-3px);
+    }
+
+    .pm-btn-azul {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--azul);
+        color: white;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: 50px;
+        padding: 14px 32px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+        box-shadow: 0 4px 20px rgba(29,56,107,0.3);
+    }
+    .pm-btn-azul:hover {
+        background: var(--azul-dark);
+        transform: translateY(-3px);
+    }
+
+    /* ── SECTION HEADER ── */
+    .pm-section-header {
+        text-align: center;
+        margin-bottom: 56px;
+    }
+
+    .pm-section-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--naranja);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .pm-section-header h2 {
+        font-family: var(--font-title);
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .pm-section-header p {
+        color: var(--gris-texto);
+        font-size: 1.05rem;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.7;
+    }
+
+    /* ── AVISO IMPORTANTE ── */
+    .pm-notice {
+        max-width: 1100px;
+        margin: 64px auto 0;
+        padding: 0 20px;
+    }
+
+    .pm-notice-box {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        background: linear-gradient(135deg, #fff8ed, #fff3dc);
+        border-left: 5px solid var(--naranja);
+        border-radius: 16px;
+        padding: 28px 32px;
+        box-shadow: 0 8px 28px rgba(255,140,0,0.10);
+    }
+
+    .pm-notice-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--naranja);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .pm-notice-box h4 {
+        font-weight: 800;
+        color: #9a5c00;
+        font-size: 1.05rem;
+        margin-bottom: 6px;
+    }
+
+    .pm-notice-box p {
+        color: #7a4800;
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    /* ── ABOUT / VISIBILIDAD ── */
+    .pm-about {
+        padding: 100px 20px;
+        background: white;
+        overflow: hidden;
+    }
+
+    .pm-about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 72px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: center;
+    }
+
+    .pm-about-img-wrap {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 32px 80px rgba(29,56,107,0.18);
+    }
+
+    .pm-about-img-wrap::before {
+        content: '';
+        position: absolute;
+        top: -3px; left: -3px; right: -3px; bottom: -3px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--naranja), var(--azul));
+        z-index: -1;
+    }
+
+    .pm-about-img-wrap img {
+        width: 100%;
+        height: 440px;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .pm-about-img-wrap:hover img { transform: scale(1.04); }
+
+    .pm-about-badge {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        background: var(--naranja);
+        color: white;
+        font-weight: 800;
+        font-size: 0.9rem;
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(255,140,0,0.4);
+        letter-spacing: 1px;
+    }
+
+    .pm-about-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--naranja);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .pm-about-title {
+        font-family: var(--font-title);
+        font-size: 2.4rem;
+        font-weight: 900;
+        color: var(--azul);
+        margin-bottom: 22px;
+        line-height: 1.2;
+    }
+
+    .pm-about-text {
+        color: var(--gris-texto);
+        line-height: 1.85;
+        margin-bottom: 16px;
+        font-size: 0.97rem;
+    }
+
+    /* ── BENEFICIOS — diseño asimétrico ── */
+    .pm-benefits {
+        padding: 100px 20px;
+        background: var(--azul);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pm-benefits::before {
+        content: '';
+        position: absolute;
+        top: -80px; right: -80px;
+        width: 500px; height: 500px;
+        border-radius: 50%;
+        background: rgba(255,140,0,0.07);
+        pointer-events: none;
+    }
+
+    .pm-benefits .pm-section-header h2 { color: white; }
+    .pm-benefits .pm-section-header p  { color: rgba(255,255,255,0.65); }
+    .pm-benefits .pm-section-label     { color: rgba(255,140,0,0.9); }
+
+    .pm-benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .pm-benefit-card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 18px;
+        padding: 32px 20px;
+        text-align: center;
+        color: white;
+        transition: background 0.3s, transform 0.35s cubic-bezier(.34,1.56,.64,1), border-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pm-benefit-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--naranja), #ffb347);
+        border-radius: 18px 18px 0 0;
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .pm-benefit-card:hover {
+        background: rgba(255,255,255,0.12);
+        border-color: var(--naranja);
+        transform: translateY(-10px);
+        box-shadow: 0 20px 48px rgba(0,0,0,0.25);
+    }
+
+    .pm-benefit-card:hover::before { transform: scaleX(1); }
+
+    .pm-benefit-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--naranja), var(--naranja-dark));
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 18px;
+        box-shadow: 0 8px 24px rgba(255,140,0,0.3);
+        transition: transform 0.3s ease;
+        animation: float 3.5s ease-in-out infinite;
+    }
+
+    .pm-benefit-card:nth-child(2) .pm-benefit-icon { animation-delay: 0.3s; }
+    .pm-benefit-card:nth-child(3) .pm-benefit-icon { animation-delay: 0.6s; }
+    .pm-benefit-card:nth-child(4) .pm-benefit-icon { animation-delay: 0.9s; }
+    .pm-benefit-card:nth-child(5) .pm-benefit-icon { animation-delay: 1.2s; }
+    .pm-benefit-card:hover .pm-benefit-icon { transform: rotate(-8deg) scale(1.1); animation-play-state: paused; }
+
+    .pm-benefit-card h3 {
+        font-size: 0.95rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .pm-benefit-card p {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.7);
+        line-height: 1.65;
+    }
+
+    /* ── UBICACIONES — grid tipo mosaico ── */
+    .pm-locations {
+        padding: 100px 20px;
+        background: var(--gris-claro);
+    }
+
+    .pm-locations-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* primera card más grande */
+    .pm-location-card {
+        background: white;
+        border-radius: 20px;
+        padding: 36px 24px;
+        text-align: center;
+        transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s, border-color 0.3s;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pm-location-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--azul), var(--naranja));
+        transform: scaleX(0);
+        transition: transform 0.35s ease;
+        transform-origin: left;
+    }
+
+    .pm-location-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 28px 56px rgba(29,56,107,0.12);
+        border-color: rgba(29,56,107,0.08);
+    }
+
+    .pm-location-card:hover::after { transform: scaleX(1); }
+
+    .pm-location-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--azul-light), rgba(29,56,107,0.12));
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        transition: background 0.3s, transform 0.3s;
+    }
+
+    .pm-location-card:hover .pm-location-icon {
+        background: linear-gradient(135deg, var(--azul), var(--naranja));
+        transform: rotate(-6deg) scale(1.05);
+    }
+
+    .pm-location-card:hover .pm-location-icon .mud-icon-root { color: white !important; }
+
+    .pm-location-card h3 {
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .pm-location-card p {
+        font-size: 0.88rem;
+        color: var(--gris-texto);
+        line-height: 1.65;
+    }
+
+    /* ── PROCESO — timeline horizontal ── */
+    .pm-process {
+        padding: 100px 20px;
+        background: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pm-process-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    /* línea conectora */
+    .pm-process-grid::before {
+        content: '';
+        position: absolute;
+        top: 52px;
+        left: 12.5%;
+        right: 12.5%;
+        height: 2px;
+        background: linear-gradient(90deg, var(--azul), var(--naranja), var(--azul));
+        z-index: 0;
+        opacity: 0.2;
+    }
+
+    .pm-process-step {
+        text-align: center;
+        padding: 20px 24px 36px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .pm-step-num {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        font-family: var(--font-title);
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: white;
+        box-shadow: 0 12px 32px rgba(29,56,107,0.28);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 4px solid white;
+    }
+
+    .pm-process-step:hover .pm-step-num {
+        transform: scale(1.12);
+        box-shadow: 0 16px 40px rgba(255,140,0,0.3);
+        background: linear-gradient(135deg, var(--naranja), var(--naranja-dark));
+    }
+
+    .pm-process-step h3 {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .pm-process-step p {
+        font-size: 0.88rem;
+        color: var(--gris-texto);
+        line-height: 1.7;
+    }
+
+    /* ── GALERÍA BLAZOR ── */
+    .pm-gallery {
+        padding: 100px 20px;
+        background: var(--gris-claro);
+    }
+
+    .pm-gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .pm-gallery-item {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        aspect-ratio: 4/3;
+        cursor: pointer;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    }
+
+    .pm-gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .pm-gallery-item:hover img { transform: scale(1.08); }
+
+    .pm-gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(13,31,60,0.78) 0%, transparent 55%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        display: flex;
+        align-items: flex-end;
+        padding: 20px;
+    }
+
+    .pm-gallery-item:hover .pm-gallery-overlay { opacity: 1; }
+
+    .pm-gallery-label {
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .pm-gallery-zoom {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 36px;
+        height: 36px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .pm-gallery-item:hover .pm-gallery-zoom {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    /* Lightbox */
+    .pm-lightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(5,12,35,0.95);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .pm-lightbox.open {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .pm-lightbox img {
+        max-width: 90vw;
+        max-height: 85vh;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+        transform: scale(0.93);
+        transition: transform 0.3s ease;
+    }
+
+    .pm-lightbox.open img { transform: scale(1); }
+
+    .pm-lightbox-close {
+        position: absolute;
+        top: 20px; right: 24px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        width: 44px; height: 44px;
+        border-radius: 50%;
+        font-size: 22px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        line-height: 1;
+    }
+
+    .pm-lightbox-close:hover { background: rgba(255,255,255,0.25); }
+
+    .pm-lightbox-caption {
+        position: absolute;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255,255,255,0.75);
+        font-size: 13px;
+        background: rgba(0,0,0,0.4);
+        padding: 6px 18px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    /* ── CTA FINAL ── */
+    .pm-cta {
+        padding: 120px 20px;
+        background: linear-gradient(135deg, var(--azul-dark) 0%, var(--azul) 100%);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pm-cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+
+    /* gran texto de fondo */
+    .pm-cta-bg-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: var(--font-title);
+        font-size: 14rem;
+        font-weight: 900;
+        color: rgba(255,255,255,0.03);
+        white-space: nowrap;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .pm-cta-inner { position: relative; z-index: 1; }
+
+    .pm-cta-label {
+        display: inline-block;
+        background: rgba(255,140,0,0.18);
+        border: 1px solid rgba(255,140,0,0.4);
+        border-radius: 50px;
+        padding: 6px 20px;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--naranja);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+    }
+
+    .pm-cta h2 {
+        font-family: var(--font-title);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 900;
+        color: white;
+        margin-bottom: 18px;
+        line-height: 1.2;
+    }
+
+    .pm-cta p {
+        color: rgba(255,255,255,0.72);
+        max-width: 620px;
+        margin: 0 auto 44px;
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+
+    .pm-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    .pm-footer {
+        background: var(--azul-dark);
+        color: white;
+        padding: 64px 20px 0;
+    }
+
+    .pm-footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+        gap: 48px;
+        max-width: 1200px;
+        margin: 0 auto 48px;
+    }
+
+    .pm-footer-section h3 {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 22px;
+        color: var(--naranja);
+    }
+
+    .pm-footer-section p,
+    .pm-footer-section a {
+        color: rgba(255,255,255,0.58);
+        text-decoration: none;
+        font-size: 0.9rem;
+        line-height: 2.3;
+        display: block;
+        transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .pm-footer-section a:hover { color: white; padding-left: 6px; }
+
+    .pm-footer-logo img {
+        height: 80px; width: 160px;
+        background: white;
+        border-radius: 10px;
+        padding: 8px;
+        object-fit: contain;
+        margin-bottom: 18px;
+        display: block;
+    }
+
+    .pm-social-links { display: flex; gap: 10px; margin-top: 16px; }
+
+    .pm-social-btn {
+        width: 38px; height: 38px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,0.65);
+        text-decoration: none;
+        transition: background 0.25s, color 0.25s, transform 0.25s, border-color 0.25s;
+    }
+
+    .pm-social-btn:hover {
+        background: var(--naranja);
+        border-color: var(--naranja);
+        color: white;
+        transform: translateY(-4px);
+    }
+
+    .pm-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: rgba(255,255,255,0.58);
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    .pm-footer-divider {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.07);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .pm-footer-bottom {
+        padding: 24px 0;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .pm-footer-bottom p, .pm-footer-brand { color: rgba(255,255,255,0.38); font-size: 0.82rem; }
+    .pm-footer-brand span { color: var(--naranja); font-weight: 700; }
+
+    /* ── RESPONSIVE ── */
+    @@media (max-width: 1024px) {
+        .pm-hero            { grid-template-columns: 1fr; min-height: auto; }
+        .pm-hero-right      { height: 380px; }
+        .pm-hero-float      { left: 24px; bottom: 24px; }
+        .pm-hero-left       { padding: 100px 36px 60px; }
+        .pm-stats-strip     { grid-template-columns: repeat(2, 1fr); }
+        .pm-about-grid      { grid-template-columns: 1fr; gap: 48px; }
+        .pm-benefits-grid   { grid-template-columns: repeat(3, 1fr); }
+        .pm-locations-grid  { grid-template-columns: repeat(3, 1fr); }
+        .pm-process-grid    { grid-template-columns: repeat(2, 1fr); }
+        .pm-process-grid::before { display: none; }
+        .pm-gallery-grid    { grid-template-columns: repeat(2, 1fr); }
+        .pm-footer-grid     { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @@media (max-width: 640px) {
+        .pm-hero-left       { padding: 100px 24px 48px; }
+        .pm-stats-strip     { grid-template-columns: repeat(2, 1fr); }
+        .pm-benefits-grid   { grid-template-columns: repeat(2, 1fr); }
+        .pm-locations-grid  { grid-template-columns: repeat(2, 1fr); }
+        .pm-process-grid    { grid-template-columns: 1fr; }
+        .pm-gallery-grid    { grid-template-columns: 1fr; }
+        .pm-footer-grid     { grid-template-columns: 1fr; }
+        .pm-footer-bottom   { flex-direction: column; text-align: center; }
+        .pm-cta-bg-text     { font-size: 6rem; }
+    }
+</style>
+
+<!-- ═══ HERO SPLIT ═══ -->
+<section class="pm-hero">
+    <!-- Izquierdo -->
+    <div class="pm-hero-left">
+        <div class="pm-hero-left-inner">
+            <div class="pm-hero-eyebrow">
+                <MudIcon Icon="@Icons.Material.Filled.Map" Size="Size.Small" Style="color:#FF8C00;" />
+                <span>Publicidad en Eventos</span>
+            </div>
+
+            <h1 class="pm-hero-title">
+                Promocione su Marca en los Mejores
+                <span class="pm-hl"> Puntos Estratégicos</span>
+            </h1>
+
+            <p class="pm-hero-desc">
+                Colocación de Mupi y vallas publicitarias en ubicaciones de alto impacto durante
+                sus eventos, garantizando máxima visibilidad ante su público objetivo.
+            </p>
+
+            <div class="pm-hero-chips">
+                <div class="pm-chip">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color:#FF8C00;" />
+                    <span>Mupi y Vallas</span>
+                </div>
+                <div class="pm-chip">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color:#FF8C00;" />
+                    <span>Alto Impacto Visual</span>
+                </div>
+                <div class="pm-chip">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color:#FF8C00;" />
+                    <span>Paquetes por Evento</span>
+                </div>
+            </div>
+
+            <div class="pm-hero-btns">
+                <a href="/contacto" class="pm-btn-primary">
+                    Solicitar Información
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+                </a>
+                <a href="#beneficios" class="pm-btn-outline-white">
+                    Ver Beneficios
+                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Derecho -->
+    <div class="pm-hero-right">
+        <div class="pm-hero-right-overlay"></div>
+        <img src="/ImagenesPM/VallasPublicitarias.png"
+             alt="Vallas Publicitarias COPEREX" loading="eager" />
+        <div class="pm-hero-float">
+            <div class="pm-hero-float-num">500K<span>+</span></div>
+            <p>Visitantes Anuales</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ STRIP DE ESTADÍSTICAS ═══ -->
+<div class="pm-stats-strip">
+    <div class="pm-stat-cell">
+        <span class="pm-stat-cell-num">500K+</span>
+        <span class="pm-stat-cell-label">Visitantes Anuales</span>
+    </div>
+    <div class="pm-stat-cell">
+        <span class="pm-stat-cell-num">150+</span>
+        <span class="pm-stat-cell-label">Eventos al Año</span>
+    </div>
+    <div class="pm-stat-cell">
+        <span class="pm-stat-cell-num">95%</span>
+        <span class="pm-stat-cell-label">Satisfacción de Clientes</span>
+    </div>
+    <div class="pm-stat-cell">
+        <span class="pm-stat-cell-num">50+</span>
+        <span class="pm-stat-cell-label">Años de Experiencia</span>
+    </div>
+</div>
+
+<!-- ═══ TICKER ═══ -->
+<div class="pm-ticker">
+    <div class="pm-ticker-track">
+        @foreach (var _ in Enumerable.Range(0, 2))
+        {
+            @foreach (var t in _tickerItems)
+            {
+                <div class="pm-ticker-item">
+                    <div class="pm-ticker-dot"></div>
+                    <span>@t</span>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- ═══ AVISO IMPORTANTE ═══ -->
+<div class="pm-notice">
+    <div class="pm-notice-box">
+        <div class="pm-notice-icon">
+            <MudIcon Icon="@Icons.Material.Filled.Warning" Style="color:white;" />
+        </div>
+        <div>
+            <h4>Publicidad Temporal por Evento</h4>
+            <p><strong>Nota importante:</strong> La publicidad física (Mupi y vallas) se instala únicamente durante la duración de cada evento específico. Una vez finalizado el evento, toda la publicidad se retira. No existe permanencia después del evento.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ VISIBILIDAD ESTRATÉGICA ═══ -->
+<section class="pm-about">
+    <div class="pm-about-grid">
+        <div class="pm-about-img-wrap">
+            <img src="/ImagenesPM/Muppin.png"
+                 alt="Vallas Publicitarias COPEREX" loading="lazy" />
+            <div class="pm-about-badge">Desde 1971</div>
+        </div>
+
+        <div>
+            <span class="pm-about-label">¿Por qué elegir COPEREX?</span>
+            <h2 class="pm-about-title">Visibilidad Estratégica Durante sus Eventos</h2>
+
+            <p class="pm-about-text">
+                COPEREX cuenta con diversos puntos estratégicos dentro de sus instalaciones,
+                cuidadosamente identificados para garantizar que la publicidad de cada evento
+                sea ubicada en espacios de <strong>alta visibilidad e impacto</strong>.
+            </p>
+            <p class="pm-about-text">
+                La correcta colocación en áreas clave —accesos principales, pasillos de alto
+                tránsito, áreas comunes y zonas de registro— maximiza el alcance del mensaje
+                y fortalece el posicionamiento de la marca durante toda la actividad.
+            </p>
+
+            <a href="/contacto" class="pm-btn-azul" style="margin-top:16px;">
+                Consultar Espacios
+                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ BENEFICIOS ═══ -->
+<section class="pm-benefits" id="beneficios">
+    <div class="pm-section-header">
+        <span class="pm-section-label">Ventajas Competitivas</span>
+        <h2>¿Por Qué Anunciarse con Nosotros?</h2>
+        <p>Exposición real ante miles de tomadores de decisión en cada evento</p>
+    </div>
+
+    <div class="pm-benefits-grid">
+        @foreach (var b in _beneficios)
+        {
+            <div class="pm-benefit-card">
+                <div class="pm-benefit-icon">
+                    <MudIcon Icon="@b.Icon" Style="color:white; font-size:1.6rem;" />
+                </div>
+                <h3>@b.Titulo</h3>
+                <p>@b.Descripcion</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ═══ UBICACIONES ═══ -->
+<section class="pm-locations">
+    <div class="pm-section-header">
+        <span class="pm-section-label">Espacios Publicitarios</span>
+        <h2>Dónde se Colocan los Mupi y Vallas</h2>
+        <p>Ubicaciones diseñadas para maximizar la visibilidad de su marca durante todo el evento</p>
+    </div>
+
+    <div class="pm-locations-grid">
+        @foreach (var l in _ubicaciones)
+        {
+            <div class="pm-location-card">
+                <div class="pm-location-icon">
+                    <MudIcon Icon="@l.Icon" Style="color:#1d386b;" />
+                </div>
+                <h3>@l.Titulo</h3>
+                <p>@l.Descripcion</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ═══ PROCESO ═══ -->
+<section class="pm-process">
+    <div class="pm-section-header">
+        <span class="pm-section-label">Proceso Simple</span>
+        <h2>Cómo Empezar</h2>
+        <p>En solo 4 pasos su marca estará visible en el próximo evento de COPEREX</p>
+    </div>
+
+    <div class="pm-process-grid">
+        @foreach (var (paso, i) in _pasos.Select((p, i) => (p, i)))
+        {
+            <div class="pm-process-step">
+                <div class="pm-step-num">@(i + 1)</div>
+                <h3>@paso.Titulo</h3>
+                <p>@paso.Descripcion</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ═══ GALERÍA ═══ -->
+<section class="pm-gallery">
+    <div class="pm-section-header">
+        <span class="pm-section-label">Galería</span>
+        <h2>Un Vistazo a Nuestro Recinto</h2>
+        <p>Instalaciones de primer nivel, eventos de alto impacto y espacios que hacen historia en Guatemala</p>
+    </div>
+
+    <div class="pm-gallery-grid">
+        @foreach (var g in _galeria)
+        {
+            <div class="pm-gallery-item" @onclick="() => OpenLightbox(g)">
+                <img src="@g.Src" alt="@g.Label" loading="lazy" />
+                <div class="pm-gallery-overlay">
+                    <span class="pm-gallery-label">@g.Label</span>
+                </div>
+                <div class="pm-gallery-zoom">
+                    <MudIcon Icon="@Icons.Material.Filled.ZoomIn" Size="Size.Small" />
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Lightbox -->
+<div class="pm-lightbox @(_lightboxOpen ? "open" : "")" @onclick="CloseLightbox">
+    <button class="pm-lightbox-close" @onclick:stopPropagation="true" @onclick="CloseLightbox">&times;</button>
+    @if (_lightboxItem != null)
+    {
+        <img src="@_lightboxItem.Src" alt="@_lightboxItem.Label" @onclick:stopPropagation="true" />
+        <div class="pm-lightbox-caption">@_lightboxItem.Label</div>
+    }
+</div>
+
+<!-- ═══ CTA FINAL ═══ -->
+<section class="pm-cta">
+    <div class="pm-cta-bg-text">COPEREX</div>
+    <div class="pm-cta-inner">
+        <div class="pm-cta-label">Empiece Hoy</div>
+        <h2>Promocione su Marca<br />en sus Próximos Eventos</h2>
+        <p>
+            Posicione su marca en puntos estratégicos previamente identificados,
+            garantizando exposición ante asistentes, visitantes y participantes,
+            fortaleciendo el alcance de su mensaje y el posicionamiento de su marca.
+        </p>
+        <div class="pm-cta-btns">
+            <a href="/contacto" class="pm-btn-primary">
+                Solicitar Información
+                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+            </a>
+            <a href="/Salones" class="pm-btn-outline-white">Ver Nuestros Espacios</a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="pm-footer">
+    <div class="pm-footer-grid">
+        <div class="pm-footer-section">
+            <div class="pm-footer-logo">
+                <img src="/ImagenesMyF/LogoCoperex.jpg" alt="Logo COPEREX" />
+            </div>
+            <p>Centro de convenciones líder en Guatemala, ofreciendo espacios de calidad para todo tipo de eventos desde 1971.</p>
+            <div class="pm-social-links">
+                <a href="https://www.facebook.com/parquedelaindustriacoperex" class="pm-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Small" />
+                </a>
+                <a href="https://www.instagram.com/parquedelaindustria/" class="pm-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.CameraAlt" Size="Size.Small" />
+                </a>
+                <a href="https://x.com/ParqIndustriaGt" class="pm-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Material.Filled.AlternateEmail" Size="Size.Small" />
+                </a>
+                <a href="https://www.linkedin.com/company/coperex/" class="pm-social-btn" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.LinkedIn" Size="Size.Small" />
+                </a>
+            </div>
+        </div>
+
+        <div class="pm-footer-section">
+            <h3>Navegación</h3>
+            <a href="/">Inicio</a>
+            <a href="/QuienesSomos">Quiénes Somos</a>
+            <a href="/Salones">Nuestros Espacios</a>
+            <a href="/INTERFER">INTERFER</a>
+            <a href="/contacto">Contacto</a>
+        </div>
+
+        <div class="pm-footer-section">
+            <h3>Servicios</h3>
+            <a href="/Salones">Alquiler de Salones</a>
+            <a href="#">Eventos Corporativos</a>
+            <a href="#">Ferias Comerciales</a>
+            <a href="#">Eventos Sociales</a>
+            <a href="/PatrimoniosNacionales">Patrimonios Nacionales</a>
+        </div>
+
+        <div class="pm-footer-section">
+            <h3>Contacto</h3>
+            <div class="pm-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>Zona 9, Ciudad de Guatemala</span>
+            </div>
+            <div class="pm-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>info@coperex.com.gt</span>
+            </div>
+            <div class="pm-contact-item">
+                <MudIcon Icon="@Icons.Material.Filled.Phone" Size="Size.Small" Style="color:#FF8C00; flex-shrink:0;" />
+                <span>+502 2222-6464 EXT. 157</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="pm-footer-divider" />
+
+    <div class="pm-footer-bottom">
+        <p>&copy; @DateTime.Now.Year COPEREX. Todos los derechos reservados.</p>
+        <p class="pm-footer-brand">Parque de la Industria — <span>Guatemala</span></p>
+    </div>
+</footer>
+
+@code {
+    /* ── Lightbox ── */
+    private bool _lightboxOpen = false;
+    private GaleriaItem? _lightboxItem = null;
+
+    private void OpenLightbox(GaleriaItem item) { _lightboxItem = item; _lightboxOpen = true; }
+    private void CloseLightbox() { _lightboxOpen = false; }
+
+    private record BenefitItem(string Icon, string Titulo, string Descripcion);
+    private record LocationItem(string Icon, string Titulo, string Descripcion);
+    private record PasoItem(string Titulo, string Descripcion);
+    private record GaleriaItem(string Src, string Label);
+
+    private readonly List<string> _tickerItems = new()
+    {
+        "Mupi Publicitario", "Vallas de Gran Formato", "Entradas Principales",
+        "Pasillos de Alto Tráfico", "Área de Registro", "Instalación Incluida",
+        "500K+ Visitantes Anuales", "150+ Eventos al Año", "50 Años de Experiencia",
+    };
+
+    private readonly List<BenefitItem> _beneficios = new()
+    {
+        new(Icons.Material.Filled.TrendingUp,
+            "Alto Tráfico",
+            "Exposición directa a miles de visitantes durante cada evento."),
+        new(Icons.Material.Filled.People,
+            "Audiencia Calificada",
+            "Directivos y tomadores de decisión de empresas líderes."),
+        new(Icons.Material.Filled.MyLocation,
+            "Ubicaciones Clave",
+            "Mupi y vallas en entradas, pasillos y zonas de registro."),
+        new(Icons.Material.Filled.Visibility,
+            "Alto Impacto Visual",
+            "Formatos de gran tamaño que captan la atención de todos."),
+        new(Icons.Material.Filled.Build,
+            "Instalación Incluida",
+            "Nos encargamos del montaje y desmontaje completo."),
+    };
+
+    private readonly List<LocationItem> _ubicaciones = new()
+    {
+        new(Icons.Material.Filled.MeetingRoom,
+            "Entradas Principales",
+            "Primer punto de contacto con todos los visitantes. Máxima visibilidad garantizada."),
+        new(Icons.Material.Filled.LinearScale,
+            "Pasillos Principales",
+            "Zonas de alto tráfico donde los asistentes circulan constantemente."),
+        new(Icons.Material.Filled.AssignmentInd,
+            "Área de Registro",
+            "Punto estratégico donde todos los participantes deben pasar para ingresar."),
+        new(Icons.Material.Filled.Weekend,
+            "Áreas de Descanso",
+            "Zonas donde los visitantes permanecen más tiempo, mayor exposición."),
+        new(Icons.Material.Filled.AddLocationAlt,
+            "Ubicación Personalizada",
+            "Evaluamos ubicaciones específicas según el tipo de evento y público objetivo."),
+    };
+
+    private readonly List<PasoItem> _pasos = new()
+    {
+        new("Consulta y Selección",
+            "Contáctenos para conocer nuestras instalaciones y reunirse con nuestro equipo, quienes le brindarán la asesoría necesaria."),
+        new("Elección de Paquete",
+            "Elegimos juntos el paquete que mejor se adapte a sus objetivos y presupuesto para el evento."),
+        new("Diseño y Producción",
+            "Entregue su material gráfico o nuestro equipo le ayuda con el diseño de las piezas publicitarias."),
+        new("Instalación en el Evento",
+            "Instalamos toda la publicidad antes del evento y la retiramos al finalizar. Sin complicaciones para usted."),
+    };
+
+    private readonly List<GaleriaItem> _galeria = new()
+    {
+        new("/ImagenesPM/CopaMundo.jpg", "Vallas Publicitarias"),
+        new("/ImagenesPM/CopaVallas.png",              "Mupi Publicitario"),
+        new("/ImagenesPM/Entrada.jpg",           "Eventos Especiales"),
+        new("/ImagenesPM/JornadaSalud.jpg",        "Jornadas de Salud"),
+        new("/ImagenesPM/JornadaSalud02.jpg",      "Eventos Corporativos"),
+        new("/ImagenesPM/MuCopa.png",             "Entrada Principal"),
+    };
+}

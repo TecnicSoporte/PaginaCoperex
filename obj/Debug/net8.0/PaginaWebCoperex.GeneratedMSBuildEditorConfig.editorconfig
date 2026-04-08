@@ -29,12 +29,20 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/PaginaCOPEREX/PaginaWebCoperex/Components/Layout/MudProviders.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTXVkUHJvdmlkZXJzLnJhem9y
+[D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/ComoLlegar/ComoLlegar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb21vTGxlZ2FyXENvbW9MbGVnYXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/DepartamentoTrabajo/DepartamentoCRUD.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEZXBhcnRhbWVudG9UcmFiYWpvXERlcGFydGFtZW50b0NSVUQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/DepartamentoTrabajo/ListaDepartamento.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEZXBhcnRhbWVudG9UcmFiYWpvXExpc3RhRGVwYXJ0YW1lbnRvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/Error.razor]
@@ -47,6 +55,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/Login/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpblxMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/Parqueos/Parqueos.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQYXJxdWVvc1xQYXJxdWVvcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/PromocionMarca/PromocionMarcas.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9tb2Npb25NYXJjYVxQcm9tb2Npb25NYXJjYXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/QuienesSomos/QuienesSomos.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xRdWllbmVzU29tb3NcUXVpZW5lc1NvbW9zLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PaginaCOPEREX/PaginaWebCoperex/Components/Pages/Weather.razor]
